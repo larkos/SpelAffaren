@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="SpelDatabas.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="SpelDatabasTargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="SpelDatabas" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="SpelDatabasContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ProduktSet" EntityType="SpelDatabas.Produkt" />
+          <EntitySet Name="KonsolSet" EntityType="SpelDatabas.Konsol" />
+          <AssociationSet Name="KonsolProdukt" Association="SpelDatabas.KonsolProdukt">
+            <End Role="Konsol" EntitySet="KonsolSet" />
+            <End Role="Produkt" EntitySet="ProduktSet" />
+          </AssociationSet>
+          <EntitySet Name="GenreSet" EntityType="SpelDatabas.Genre" />
+          <EntitySet Name="PersonerSet" EntityType="SpelDatabas.Personer" />
+          <EntitySet Name="OrderSet" EntityType="SpelDatabas.Order" />
+          <EntitySet Name="SpelPerOrderSet" EntityType="SpelDatabas.SpelPerOrder" />
+          <AssociationSet Name="PersonerOrder" Association="SpelDatabas.PersonerOrder">
+            <End Role="Personer" EntitySet="PersonerSet" />
+            <End Role="Order" EntitySet="OrderSet" />
+          </AssociationSet>
+          <AssociationSet Name="OrderSpelPerOrder" Association="SpelDatabas.OrderSpelPerOrder">
+            <End Role="Order" EntitySet="OrderSet" />
+            <End Role="SpelPerOrder" EntitySet="SpelPerOrderSet" />
+          </AssociationSet>
+          <AssociationSet Name="SpelPerOrderProdukt" Association="SpelDatabas.SpelPerOrderProdukt">
+            <End Role="SpelPerOrder" EntitySet="SpelPerOrderSet" />
+            <End Role="Produkt" EntitySet="ProduktSet" />
+          </AssociationSet>
+          <AssociationSet Name="ProduktGenre" Association="SpelDatabas.ProduktGenre">
+            <End Role="Produkt" EntitySet="ProduktSet" />
+            <End Role="Genre" EntitySet="GenreSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Produkt">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Namn" Type="String" Nullable="false" />
+          <Property Name="GenreId" Type="Int32" Nullable="false" />
+          <Property Name="KonsolId" Type="Int32" Nullable="false" />
+          <Property Name="Beskrivning" Type="String" Nullable="false" />
+          <NavigationProperty Name="Konsol" Relationship="SpelDatabas.KonsolProdukt" FromRole="Produkt" ToRole="Konsol" />
+          <Property Name="Utgivningsår" Type="Int32" Nullable="false" />
+          <Property Name="GenreId1" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SpelPerOrder" Relationship="SpelDatabas.SpelPerOrderProdukt" FromRole="Produkt" ToRole="SpelPerOrder" />
+          <NavigationProperty Name="Genre" Relationship="SpelDatabas.ProduktGenre" FromRole="Produkt" ToRole="Genre" />
+        </EntityType>
+        <EntityType Name="Konsol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Namn" Type="String" Nullable="false" />
+          <NavigationProperty Name="Produkt" Relationship="SpelDatabas.KonsolProdukt" FromRole="Konsol" ToRole="Produkt" />
+        </EntityType>
+        <Association Name="KonsolProdukt">
+          <End Type="SpelDatabas.Konsol" Role="Konsol" Multiplicity="*" />
+          <End Type="SpelDatabas.Produkt" Role="Produkt" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Namn" Type="String" Nullable="false" />
+          <NavigationProperty Name="Produkt" Relationship="SpelDatabas.ProduktGenre" FromRole="Genre" ToRole="Produkt" />
+        </EntityType>
+        <EntityType Name="Personer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Förnamn" Type="String" Nullable="false" />
+          <Property Name="Efternamn" Type="String" Nullable="false" />
+          <Property Name="LogOnEmail" Type="String" Nullable="false" />
+          <Property Name="Lösenord" Type="String" Nullable="false" />
+          <Property Name="AdminStatus" Type="String" Nullable="false" />
+          <NavigationProperty Name="Order" Relationship="SpelDatabas.PersonerOrder" FromRole="Personer" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="Kommentar" Type="String" Nullable="false" />
+          <NavigationProperty Name="Personer" Relationship="SpelDatabas.PersonerOrder" FromRole="Order" ToRole="Personer" />
+          <Property Name="PersonerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SpelPerOrder" Relationship="SpelDatabas.OrderSpelPerOrder" FromRole="Order" ToRole="SpelPerOrder" />
+        </EntityType>
+        <EntityType Name="SpelPerOrder">
+          <Key>
+            <PropertyRef Name="SpelId" />
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <NavigationProperty Name="Order" Relationship="SpelDatabas.OrderSpelPerOrder" FromRole="SpelPerOrder" ToRole="Order" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="SpelId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Produkt" Relationship="SpelDatabas.SpelPerOrderProdukt" FromRole="SpelPerOrder" ToRole="Produkt" />
+          <Property Name="Antal" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="PersonerOrder">
+          <End Type="SpelDatabas.Personer" Role="Personer" Multiplicity="1" />
+          <End Type="SpelDatabas.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="PersonerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OrderSpelPerOrder">
+          <End Type="SpelDatabas.Order" Role="Order" Multiplicity="1" />
+          <End Type="SpelDatabas.SpelPerOrder" Role="SpelPerOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SpelPerOrder">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SpelPerOrderProdukt">
+          <End Type="SpelDatabas.SpelPerOrder" Role="SpelPerOrder" Multiplicity="1" />
+          <End Type="SpelDatabas.Produkt" Role="Produkt" Multiplicity="1" />
+        </Association>
+        <Association Name="ProduktGenre">
+          <End Type="SpelDatabas.Produkt" Role="Produkt" Multiplicity="*" />
+          <End Type="SpelDatabas.Genre" Role="Genre" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="SpelDatabas" />
+        <Alias Key="Target" Value="SpelDatabas.Store" />
+        <EntityContainerMapping CdmEntityContainer="SpelDatabasContainer" StorageEntityContainer="SpelDatabasTargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
