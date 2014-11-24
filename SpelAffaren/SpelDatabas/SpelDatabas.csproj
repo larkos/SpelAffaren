@@ -30,7 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -41,11 +48,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Genre.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Konsol.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Order.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Personer.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Produkt.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpelDatabas.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpelDatabas.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpelDatabas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
     <Compile Include="SpelDatabas.Designer.cs">
       <DependentUpon>SpelDatabas.edmx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="SpelPerOrder.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -58,9 +93,24 @@
     <Content Include="SpelDatabas.edmx.diagram">
       <DependentUpon>SpelDatabas.edmx</DependentUpon>
     </Content>
+    <Content Include="SpelDatabas.edmx.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <None Include="packages.config" />
+    <None Include="SpelDatabas.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SpelDatabas.Context.cs</LastGenOutput>
+      <DependentUpon>SpelDatabas.edmx</DependentUpon>
+    </None>
+    <None Include="SpelDatabas.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SpelDatabas.cs</LastGenOutput>
+      <DependentUpon>SpelDatabas.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
