@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7bddeda15c5a4320b1443b7d269fa832" Name="Diagram1" >
+        <EntityTypeShape EntityType="SpelDatabas.Produkt" Width="1.5" PointX="1.375" PointY="0.5" />
+        <EntityTypeShape EntityType="SpelDatabas.Konsol" Width="1.5" PointX="3.625" PointY="0.5" />
+        <AssociationConnector Association="SpelDatabas.KonsolProdukt" />
+        <EntityTypeShape EntityType="SpelDatabas.Genre" Width="1.5" PointX="3.25" PointY="3.875" />
+        <EntityTypeShape EntityType="SpelDatabas.Personer" Width="1.5" PointX="5.5" PointY="0.5" />
+        <EntityTypeShape EntityType="SpelDatabas.Order" Width="1.5" PointX="7.375" PointY="1.75" />
+        <EntityTypeShape EntityType="SpelDatabas.SpelPerOrder" Width="1.5" PointX="5.125" PointY="3.25" />
+        <AssociationConnector Association="SpelDatabas.PersonerOrder" />
+        <AssociationConnector Association="SpelDatabas.OrderSpelPerOrder" />
+        <AssociationConnector Association="SpelDatabas.SpelPerOrderProdukt" />
+        <AssociationConnector Association="SpelDatabas.ProduktGenre" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

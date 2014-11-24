@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpelAffaren", "SpelAffaren\SpelAffaren.csproj", "{8EE0C1EB-7FF0-46CB-8044-8F43C563E973}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpelAffarenKlient", "SpelAffaren\SpelAffarenKlient.csproj", "{8EE0C1EB-7FF0-46CB-8044-8F43C563E973}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpelDatabas", "SpelDatabas\SpelDatabas.csproj", "{17F01BBC-90B5-4403-B564-DEC3E9F44A54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpelAffarWCF", "SpelAffarWCF\SpelAffarWCF.csproj", "{096D207F-9F81-42C6-9E59-6E6F7E258311}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpelAffarenAdminMVC", "SpelAffarenAdminMVC\SpelAffarenAdminMVC.csproj", "{FD4FE87B-A07A-4A3E-AB81-A05CAF656A95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{8EE0C1EB-7FF0-46CB-8044-8F43C563E973}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EE0C1EB-7FF0-46CB-8044-8F43C563E973}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EE0C1EB-7FF0-46CB-8044-8F43C563E973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17F01BBC-90B5-4403-B564-DEC3E9F44A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F01BBC-90B5-4403-B564-DEC3E9F44A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F01BBC-90B5-4403-B564-DEC3E9F44A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17F01BBC-90B5-4403-B564-DEC3E9F44A54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{096D207F-9F81-42C6-9E59-6E6F7E258311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{096D207F-9F81-42C6-9E59-6E6F7E258311}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{096D207F-9F81-42C6-9E59-6E6F7E258311}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{096D207F-9F81-42C6-9E59-6E6F7E258311}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4FE87B-A07A-4A3E-AB81-A05CAF656A95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4FE87B-A07A-4A3E-AB81-A05CAF656A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4FE87B-A07A-4A3E-AB81-A05CAF656A95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4FE87B-A07A-4A3E-AB81-A05CAF656A95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
