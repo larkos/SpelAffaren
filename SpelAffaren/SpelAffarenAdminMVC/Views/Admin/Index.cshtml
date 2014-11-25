@@ -73,8 +73,10 @@
                      <td>
                         @foreach (var konsolSpel in konsol.Produkt)
                         {
-                           <p class="cellEntity">@Html.ActionLink(konsolSpel.Namn, "EditGame", null, new { id = konsolSpel.Id, title = "Id: " + konsolSpel.Id + " Namn: " + konsolSpel.Namn + " Släppt: " + konsolSpel.Utgivningsår + " Konsoler: " + konsolSpel.Konsol.Count() }) av
-                        @Html.ActionLink(konsolSpel.Utgivare.Namn, "EditPublisher", new { id = konsolSpel.Utgivare.Id })</p>
+                           <p class="cellEntity">
+                              @Html.ActionLink(konsolSpel.Namn, "EditGame", null, new { id = konsolSpel.Id, title = "Id: " + konsolSpel.Id + " Namn: " + konsolSpel.Namn + " Släppt: " + konsolSpel.Utgivningsår + " Konsoler: " + konsolSpel.Konsol.Count() }) av
+                              @Html.ActionLink(konsolSpel.Utgivare.Namn, "EditPublisher", new { id = konsolSpel.Utgivare.Id })
+                           </p>
                         }
                      </td>
                   }
@@ -145,104 +147,116 @@
 <hr class="featurette" />
 
 <div class="row">
-      @if (db.ProduktSet.Count() > 0)
-      {
-         <h3>Spel</h3>
-         <table class="table">
+   @if (db.ProduktSet.Count() > 0)
+   {
+      <h3>Spel</h3>
+      <table class="table">
+         <tr>
+            <th>Id</th>
+            <th>Namn</th>
+            <th>Beskrivning</th>
+            <th>Utgivningsår</th>
+            <th>Utgivare</th>
+            <th>Konsoler</th>
+            <th>Genres</th>
+            <th>Aktiv order antal</th>
+         </tr>
+         @foreach (var spel in db.ProduktSet)
+         {
             <tr>
-               <th>Id</th>
-               <th>Namn</th>
-               <th>Beskrivning</th>
-               <th>Utgivningsår</th>
-               <th>Utgivare</th>
-               <th>Konsoler</th>
-               <th>Genres</th>
-               <th>Aktiv order antal</th>
+               <td title="Spelets Id">@spel.Id</td>
+               <td title="Spelets jävla namn">@Html.ActionLink(spel.Namn, "EditGame", new { id = spel.Id })</td>
+               <td title="@spel.Beskrivning">För musen över mig..</td>
+               <td title="När det släpptes">@spel.Utgivningsår</td>
+               <td title="Id: @spel.Utgivare.Id, Spel: @spel.Utgivare.Produkt.Count()">@Html.ActionLink(spel.Utgivare.Namn, "EditPublisher", new { id = spel.Utgivare.Id })</td>
+               @if (spel.Konsol.Count() > 0)
+               {
+                  <td>
+                     @foreach (var konsol in spel.Konsol)
+                     {
+                        <p class="cellEntity">@konsol.Namn</p>
+                     }
+                  </td>
+               }
+               else
+               {
+                  <td>Finns inte till konsoler.</td>
+               }
+               @if (spel.Genre.Count() > 0)
+               {
+                  <td>
+                     @foreach (var genres in spel.Genre)
+                     {
+                        <p class="cellEntity">@genres.Namn</p>
+                     }
+                  </td>
+               }
+               else
+               {
+                  <td>Ingen genre.</td>
+               }
+               @if (spel.SpelPerOrder.Count() > 0)
+               {
+                  <td>
+                     @foreach (var spelOrder in spel.SpelPerOrder)
+                     {
+                        <p class="cellEntity">Id: @spelOrder.OrderId, @spelOrder.Antal st</p>
+                     }
+                  </td>
+               }
+               else
+               {
+                  <td>Finns inte i någon order.</td>
+               }
+               <td>@Html.ActionLink("Ta bort", "DeleteGame", new { id = spel.Id })</td>
             </tr>
-            @foreach (var spel in db.ProduktSet)
-            {
-               <tr>
-                  <td title="Spelets Id">@spel.Id</td>
-                  <td title="Spelets jävla namn">@Html.ActionLink(spel.Namn, "EditGame", new { id = spel.Id })</td>
-                  <td title="@spel.Beskrivning">För musen över mig..</td>
-                  <td title="När det släpptes">@spel.Utgivningsår</td>
-                  <td title="Id: @spel.Utgivare.Id, Spel: @spel.Utgivare.Produkt.Count()">@Html.ActionLink(spel.Utgivare.Namn, "EditPublisher", new { id = spel.Utgivare.Id })</td>
-                  @if (spel.Konsol.Count() > 0)
-                  {
-                     <td>
-                        @foreach (var konsol in spel.Konsol)
-                        {
-                           <p class="cellEntity">@konsol.Namn</p>
-                        }
-                     </td>
-                  }
-                  else
-                  {
-                     <td>Finns inte till konsoler.</td>
-                  }
-                  @if (spel.Genre.Count() > 0)
-                  {
-                     <td>
-                        @foreach (var genres in spel.Genre)
-                        {
-                           <p class="cellEntity">@genres.Namn</p>
-                        }
-                     </td>
-                  }
-                  else
-                  {
-                     <td>Ingen genre.</td>
-                  }
-                  @if (spel.SpelPerOrder.Count() > 0)
-                  {
-                     <td>
-                        @foreach (var spelOrder in spel.SpelPerOrder)
-                        {
-                           <p class="cellEntity">Id: @spelOrder.OrderId, @spelOrder.Antal st</p>
-                        }
-                     </td>
-                  }
-                  else
-                  {
-                     <td>Finns inte i någon order.</td>
-                  }
-                  <td>@Html.ActionLink("Ta bort", "DeleteGame", new { id = spel.Id })</td>
-               </tr>
-            }
-         </table>
-      }
+         }
+      </table>
+   }
 </div>
 
-<div class="row">
-   <div class="col-md-8 col-sm-12">
+
+@using (Html.BeginForm("CreateGame", "Admin", FormMethod.Post))
+{
+   <div class="row">
       <h3>Skapa spel</h3>
-      @using (Html.BeginForm("CreateGame", "Admin", FormMethod.Post))
-      {
+      <div class="col-md-2 col-sm-4">
          <div class="form-group">
-            @Html.Label("Namn")
-            @Html.Editor("Name", null, new { @class = "form-control" })
+            @Html.Label("Namn")<br />
+            @Html.TextBox("Name", null, new  { @class = "form-control" })
          </div>
          <div class="form-group">
             @Html.Label("Utgivare")
             @Html.DropDownList("UtgivareId", db.UtgivareSet.Select(u => new SelectListItem { Text = u.Namn, Value = u.Id.ToString() }).OrderBy(o => o.Text), new { @class = "form-control" })
          </div>
          <div class="form-group">
-            @Html.Label("Vilka konsoler?")
-            @Html.ListBox("Konsoler", db.KonsolSet.Select(k => new SelectListItem { Text = k.Namn, Value = k.Id.ToString() }).OrderBy(o => o.Text), new { @class = "form-control" })
+            @Html.Label("Utgivningsår")
+            @Html.Editor("Utgivningsår", new { htmlAttributes = new { @class = "form-control", style = "width:60%;" } })
          </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+         <div class="form-group">
+            @Html.Label("Vilka konsoler?")
+            @Html.ListBox("Konsoler", db.KonsolSet.Select(k => new SelectListItem { Text = k.Namn, Value = k.Id.ToString() }).OrderBy(o => o.Text), new { @class = "form-control", style = "height:178px;" })
+         </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
          <div class="form-group">
             @Html.Label("Genre")
-            @Html.ListBox("Genres", db.GenreSet.Select(g => new SelectListItem { Text = g.Namn, Value = g.Id.ToString() }).OrderBy(o => o.Text), new { @class = "form-control", style = "height:300px;" })
+            @Html.ListBox("Genres", db.GenreSet.Select(g => new SelectListItem { Text = g.Namn, Value = g.Id.ToString() }).OrderBy(o => o.Text), new { @class = "form-control", style = "height:178px;" })
          </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
          <div class="form-group">
             @Html.Label("Beskrivning")
-            @Html.TextArea("Beskrivning", new { style = "height:150px;width:80%;" })
+            @Html.TextArea("Beskrivning", new { @class = "form-control", style = "height:178px;" })
          </div>
-         <div class="form-group">
-            @Html.Label("Utgivningsår")
-            @Html.TextArea("Utgivningsår")
-         </div>
-         <input type="submit" class="btn btn-default" value="Skapa spel" />
-      }
+      </div>
    </div>
-</div>
+   <div class="row">
+      <div class="col-md-3 col-sm-6">
+
+      </div>
+   </div>
+   <input type="submit" class="btn btn-primary" value="Skapa spel" />
+}
