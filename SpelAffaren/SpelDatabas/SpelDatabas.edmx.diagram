@@ -16,6 +16,8 @@
         <AssociationConnector Association="SpelDatabas.ProduktGenre" />
         <AssociationConnector Association="SpelDatabas.ProduktSpelPerOrder" />
         <AssociationConnector Association="SpelDatabas.SpelPerOrderOrder" />
+        <EntityTypeShape EntityType="SpelDatabas.Utgivare" Width="1.5" PointX="0.75" PointY="4.25" />
+        <AssociationConnector Association="SpelDatabas.UtgivareProdukt" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

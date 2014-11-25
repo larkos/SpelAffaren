@@ -1,0 +1,38 @@
+﻿@model SpelDatabas.Genre
+
+@{
+   var db = new SpelDatabas.SpelDatabasContainer();
+}
+
+@using (Html.BeginForm())
+{
+   <div class="form-horizontal">
+      <h4>Genre Id: @Model.Id, namn: @Model.Namn, spel i genren: @Model.Produkt.Count()</h4>
+      <hr class="featurette" />
+      @Html.HiddenFor(model => model.Id)
+
+      <div class="form-group">
+         @Html.LabelFor(model => model.Namn, htmlAttributes: new { @class = "control-label col-md-2" })
+         <div class="col-md-6">
+            @Html.Editor("namn", new { htmlAttributes = new { @class = "form-control", placeolder = Model.Namn } })
+         </div>
+      </div>
+
+      <div class="form-group">
+         @Html.LabelFor(model => model.Produkt, new { @class = "control-label col-md-2" })
+         <div class="col-md-6">
+            @Html.ListBox("games", db.ProduktSet.Select(t => new SelectListItem { Text = t.Namn, Value = t.Id.ToString() }), new { @class = "form-control" })
+         </div>
+      </div>
+
+      <div class="form-group">
+         <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Spara" class="btn btn-default" />
+         </div>
+      </div>
+   </div>
+}
+
+<div>
+   @Html.ActionLink("Tillbaka", "Index")
+</div>

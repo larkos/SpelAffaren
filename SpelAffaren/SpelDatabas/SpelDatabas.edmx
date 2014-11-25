@@ -12,6 +12,7 @@
     <EntitySet Name="PersonerSet" EntityType="SpelDatabas.Store.PersonerSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="OrderSet" EntityType="SpelDatabas.Store.OrderSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="SpelPerOrderSet" EntityType="SpelDatabas.Store.SpelPerOrderSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UtgivareSet" EntityType="SpelDatabas.Store.UtgivareSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="KonsolProdukt" EntityType="SpelDatabas.Store.KonsolProdukt" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ProduktGenre" EntityType="SpelDatabas.Store.ProduktGenre" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_KonsolProdukt_Konsol" Association="SpelDatabas.Store.FK_KonsolProdukt_Konsol">
@@ -42,6 +43,10 @@
       <End Role="SpelPerOrder" EntitySet="SpelPerOrderSet" />
       <End Role="Order" EntitySet="OrderSet" />
     </AssociationSet>
+    <AssociationSet Name="UtgivareProdukt" Association="SpelDatabas.Store.UtgivareProdukt">
+      <End Role="Utgivare" EntitySet="UtgivareSet" />
+      <End Role="Produkt" EntitySet="ProduktSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="ProduktSet">
     <Key>
@@ -49,11 +54,12 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Namn" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="GenreId" Type="int" Nullable="false" />
     <Property Name="KonsolId" Type="int" Nullable="false" />
     <Property Name="Beskrivning" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Utgivningsår" Type="int" Nullable="false" />
-    <Property Name="GenreId1" Type="int" Nullable="false" />
+    <Property Name="GenreId" Type="int" Nullable="false" />
+    <Property Name="UtgivareId" Type="int" Nullable="false" />
+    <Property Name="UtgivareId1" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="KonsolSet">
     <Key>
@@ -97,6 +103,13 @@
     <Property Name="Antal" Type="int" Nullable="false" />
     <Property Name="SpelId" Type="int" Nullable="false" />
     <Property Name="OrderId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UtgivareSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Namn" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="KonsolProdukt">
     <Key>
@@ -147,6 +160,18 @@
       </Principal>
       <Dependent Role="SpelPerOrder">
         <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UtgivareProdukt">
+    <End Role="Utgivare" Type="SpelDatabas.Store.UtgivareSet" Multiplicity="1" />
+    <End Role="Produkt" Type="SpelDatabas.Store.ProduktSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Utgivare">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Produkt">
+        <PropertyRef Name="UtgivareId1" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -229,6 +254,11 @@
             <End Role="SpelPerOrder" EntitySet="SpelPerOrderSet" />
             <End Role="Order" EntitySet="OrderSet" />
           </AssociationSet>
+          <EntitySet Name="UtgivareSet" EntityType="SpelDatabas.Utgivare" />
+          <AssociationSet Name="UtgivareProdukt" Association="SpelDatabas.UtgivareProdukt">
+            <End Role="Utgivare" EntitySet="UtgivareSet" />
+            <End Role="Produkt" EntitySet="ProduktSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Produkt">
           <Key>
@@ -236,14 +266,16 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Namn" Type="String" Nullable="false" />
-          <Property Name="GenreId" Type="Int32" Nullable="false" />
           <Property Name="KonsolId" Type="Int32" Nullable="false" />
           <Property Name="Beskrivning" Type="String" Nullable="false" />
           <NavigationProperty Name="Konsol" Relationship="SpelDatabas.KonsolProdukt" FromRole="Produkt" ToRole="Konsol" />
           <Property Name="Utgivningsår" Type="Int32" Nullable="false" />
-          <Property Name="GenreId1" Type="Int32" Nullable="false" />
+          <Property Name="GenreId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Genre" Relationship="SpelDatabas.ProduktGenre" FromRole="Produkt" ToRole="Genre" />
           <NavigationProperty Name="SpelPerOrder" Relationship="SpelDatabas.ProduktSpelPerOrder" FromRole="Produkt" ToRole="SpelPerOrder" />
+          <Property Name="UtgivareId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Utgivare" Relationship="SpelDatabas.UtgivareProdukt" FromRole="Produkt" ToRole="Utgivare" />
+          <Property Name="UtgivareId1" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Konsol">
           <Key>
@@ -339,6 +371,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Utgivare">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Namn" Type="String" Nullable="false" />
+          <NavigationProperty Name="Produkt" Relationship="SpelDatabas.UtgivareProdukt" FromRole="Utgivare" ToRole="Produkt" />
+        </EntityType>
+        <Association Name="UtgivareProdukt">
+          <End Type="SpelDatabas.Utgivare" Role="Utgivare" Multiplicity="1" />
+          <End Type="SpelDatabas.Produkt" Role="Produkt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Utgivare">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Produkt">
+              <PropertyRef Name="UtgivareId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -350,11 +402,12 @@
         <MappingFragment StoreEntitySet="ProduktSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Namn" ColumnName="Namn" />
-          <ScalarProperty Name="GenreId" ColumnName="GenreId" />
           <ScalarProperty Name="KonsolId" ColumnName="KonsolId" />
           <ScalarProperty Name="Beskrivning" ColumnName="Beskrivning" />
           <ScalarProperty Name="Utgivningsår" ColumnName="Utgivningsår" />
-          <ScalarProperty Name="GenreId1" ColumnName="GenreId1" />
+          <ScalarProperty Name="GenreId" ColumnName="GenreId" />
+          <ScalarProperty Name="UtgivareId" ColumnName="UtgivareId" />
+          <ScalarProperty Name="UtgivareId1" ColumnName="UtgivareId1" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -402,6 +455,14 @@
           <ScalarProperty Name="SpelId" ColumnName="SpelId" />
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="Antal" ColumnName="Antal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UtgivareSet">
+      <EntityTypeMapping TypeName="IsTypeOf(SpelDatabas.Utgivare)">
+        <MappingFragment StoreEntitySet="UtgivareSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Namn" ColumnName="Namn" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

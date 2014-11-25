@@ -31,5 +31,6 @@ namespace SpelDatabas
         public virtual DbSet<Personer> PersonerSet { get; set; }
         public virtual DbSet<Order> OrderSet { get; set; }
         public virtual DbSet<SpelPerOrder> SpelPerOrderSet { get; set; }
+        public virtual DbSet<Utgivare> UtgivareSet { get; set; }
     }
 }

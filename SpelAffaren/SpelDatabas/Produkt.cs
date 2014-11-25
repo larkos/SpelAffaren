@@ -23,14 +23,16 @@ namespace SpelDatabas
     
         public int Id { get; set; }
         public string Namn { get; set; }
-        public int GenreId { get; set; }
         public int KonsolId { get; set; }
         public string Beskrivning { get; set; }
         public int Utgivningsår { get; set; }
-        public int GenreId1 { get; set; }
+        public int GenreId { get; set; }
+        public int UtgivareId { get; set; }
+        public int UtgivareId1 { get; set; }
     
         public virtual ICollection<Konsol> Konsol { get; set; }
         public virtual ICollection<Genre> Genre { get; set; }
         public virtual ICollection<SpelPerOrder> SpelPerOrder { get; set; }
+        public virtual Utgivare Utgivare { get; set; }
     }
 }

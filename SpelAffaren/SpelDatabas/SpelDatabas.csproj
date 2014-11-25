@@ -82,6 +82,9 @@
     <Compile Include="SpelPerOrder.cs">
       <DependentUpon>SpelDatabas.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utgivare.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="SpelDatabas.edmx">
@@ -96,7 +99,9 @@
     <Content Include="SpelDatabas.edmx.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="SpelDatabas.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

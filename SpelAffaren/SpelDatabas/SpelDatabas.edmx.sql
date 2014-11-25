@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/24/2014 12:03:25
+-- Date Created: 11/25/2014 11:09:49
 -- Generated from EDMX file: C:\Repo\Grupparbete\SpelAffaren\SpelAffaren\SpelDatabas\SpelDatabas.edmx
 -- --------------------------------------------------
 
@@ -38,6 +38,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_SpelPerOrderOrder]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[SpelPerOrderSet] DROP CONSTRAINT [FK_SpelPerOrderOrder];
 GO
+IF OBJECT_ID(N'[dbo].[FK_UtgivareProdukt]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ProduktSet] DROP CONSTRAINT [FK_UtgivareProdukt];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -61,6 +64,9 @@ GO
 IF OBJECT_ID(N'[dbo].[SpelPerOrderSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[SpelPerOrderSet];
 GO
+IF OBJECT_ID(N'[dbo].[UtgivareSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UtgivareSet];
+GO
 IF OBJECT_ID(N'[dbo].[KonsolProdukt]', 'U') IS NOT NULL
     DROP TABLE [dbo].[KonsolProdukt];
 GO
@@ -76,11 +82,12 @@ GO
 CREATE TABLE [dbo].[ProduktSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Namn] nvarchar(max)  NOT NULL,
-    [GenreId] int  NOT NULL,
     [KonsolId] int  NOT NULL,
     [Beskrivning] nvarchar(max)  NOT NULL,
     [Utgivningsår] int  NOT NULL,
-    [GenreId1] int  NOT NULL
+    [GenreId] int  NOT NULL,
+    [UtgivareId] int  NOT NULL,
+    [UtgivareId1] int  NOT NULL
 );
 GO
 
@@ -123,6 +130,13 @@ CREATE TABLE [dbo].[SpelPerOrderSet] (
     [Antal] int  NOT NULL,
     [SpelId] int  NOT NULL,
     [OrderId] int  NOT NULL
+);
+GO
+
+-- Creating table 'UtgivareSet'
+CREATE TABLE [dbo].[UtgivareSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Namn] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -178,6 +192,12 @@ GO
 ALTER TABLE [dbo].[SpelPerOrderSet]
 ADD CONSTRAINT [PK_SpelPerOrderSet]
     PRIMARY KEY CLUSTERED ([SpelId], [OrderId] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'UtgivareSet'
+ALTER TABLE [dbo].[UtgivareSet]
+ADD CONSTRAINT [PK_UtgivareSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
 -- Creating primary key on [Konsol_Id], [Produkt_Id] in table 'KonsolProdukt'
@@ -281,6 +301,21 @@ GO
 CREATE INDEX [IX_FK_SpelPerOrderOrder]
 ON [dbo].[SpelPerOrderSet]
     ([OrderId]);
+GO
+
+-- Creating foreign key on [UtgivareId1] in table 'ProduktSet'
+ALTER TABLE [dbo].[ProduktSet]
+ADD CONSTRAINT [FK_UtgivareProdukt]
+    FOREIGN KEY ([UtgivareId1])
+    REFERENCES [dbo].[UtgivareSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UtgivareProdukt'
+CREATE INDEX [IX_FK_UtgivareProdukt]
+ON [dbo].[ProduktSet]
+    ([UtgivareId1]);
 GO
 
 -- --------------------------------------------------
