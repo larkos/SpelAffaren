@@ -23,7 +23,7 @@ namespace SpelAffaren.Models
 
         public KundvagnsRepo()
         {
-            RepoCreated = DateTime.Now;
+           RepoCreated = DateTime.Now;
             Kundvagnar = new List<Kundvagn>();
         }
 
@@ -48,7 +48,9 @@ namespace SpelAffaren.Models
         public int Owner { get; set; }
 
         public List<spelprodukt> Products { get; set; }
+        public spelprodukt heading = new spelprodukt();
         public DateTime Skapad { get; set; }
+        public double Totalt { get; set; }
 
         public Kundvagn()
         {
@@ -94,22 +96,42 @@ namespace SpelAffaren.Models
         {
           Kundvagn KV=KundvagnsRepo._repo.GetMyKV(Owner);
           KV.Products.Add(sp);
+          CartCostCount();
         }
         public void DeleteFromCart(spelprodukt sp,string Owner)
       {
               Kundvagn KV=KundvagnsRepo._repo.GetMyKV(Owner);
           KV.Products.Remove(sp);
+          CartCostCount();
       }
+
+        public void CartCostCount()
+        {
+            foreach(spelprodukt sp in this.Products)
+            {
+                this.Totalt += sp.antal * sp.pris;
+            }
+        }
     }
 
     public class spelprodukt
     {
+        public int pris { get; set; }
+        public int antal { get; set; }
         public int Id {get;set;}
         public string Namn {get;set;}
         public int GenreId {get;set;}
         public int KonsolId {get;set;}
         public string Beskriving {get;set;}
         public int UtgivningsAr {get;set;}
+
+        public int Spelkostnad { get; set; }
+    }
+
+    public class produktupdater
+    {
+        public int id { get; set; }
+        public int antal { get; set; }
     }
 
     

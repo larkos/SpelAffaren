@@ -1,0 +1,139 @@
+﻿@model SpelAffaren.Models.Kundvagn
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script>
+    //function removefromcart(item)
+    //{
+    //    alert(item)
+    //    var data = document.getElementById(item);
+    //    alert(data.value)
+    //    $.ajax({url:"/Home/RemoveProdukt",
+    //        type: "POST",
+    //        data: { id: data.value },
+    //        success: function () {
+    //        $('#result').html();
+    //        }
+    //})
+           
+    //}
+
+    //function UpdateList()
+    //{
+    //    var antalitem=document.getElementsByClassName("itemantal");
+    //    var produktid=document.getElementsByClassName("updatefunc");
+
+    //    var produkt = [];
+
+    //    var json = "";
+    //    //alert(antalitem + " " + produktid);
+    //    for (i = 0; i < produktid.length; i++)
+    //    {
+    //        var item={
+    //            "antal": antalitem[i].value,
+    //            "id": produktid[i].value
+    //        }
+    //        produkt.push(item)
+    //    };
+    //    alert(antalitem + " " + produktid);
+    //    //for (i = 0; i < produkt.length; i++) {
+    //    //    alert(produkt[i].id + " " + produkt[i].antal);
+    //    //};
+    //    produkt = JSON.stringify({ 'produkt': produkt });
+
+    //    $.ajax({
+    //        contentType: 'application/json; charset=utf-8',
+    //        dataType: 'json',
+    //        type: 'POST',
+    //        url: '/Home/UpdateCart',
+    //        data: produkt,
+    //        success: function () {
+    //            $('#result').html();
+    //        },
+    //        //failure: function (response) {
+    //        //    $('#result').html(response);
+    //        //}
+    //    });
+    //}
+</script>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.heading.antal)
+            @*@Html.DisplayNameFor(model => model.)*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.heading.pris)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.heading.Namn)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.heading.GenreId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.heading.KonsolId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.heading.Beskriving)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.heading.UtgivningsAr)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.heading.Spelkostnad)
+        </th>
+    </tr>
+
+@for (var item = 0; item < Model.Products.Count();item++ )
+{
+    
+    <tr>
+        @*<td>
+            @Html.HiddenFor(modelItem=>@item.Id)
+        </td>*@
+        <td>
+           @Html.HiddenFor(modelItem => Model.Products[item].Id,new {id=item,@class="updatefunc"})
+            <input type="number" value="@Model.Products[item].antal" class="itemantal"/>
+        </td>
+        <td>
+             @Html.DisplayFor(modelItem => Model.Products[item].pris)
+           
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.Products[item].Namn)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.GenreId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.KonsolId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Beskriving)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.UtgivningsAr)
+        </td>*@
+
+        <td>
+            @Html.DisplayFor(modelItem => Model.Products[item].Spelkostnad)
+        </td>
+       <td>
+           <input type="button" value="Remove from Cart" onclick="removefromcart(@item);" />
+       </td>
+    </tr>
+}
+    <tr>
+        <th>
+            Totalt kostnad
+        </th>
+        <td>
+            @Html.DisplayFor(model=>model.Totalt)
+        </td>
+        <td> <input type="button" value="I wanna pay!" /></td>
+        <td> <input type="button" value="Update my cart!" onclick="UpdateList()"/></td>
+    </tr>
+</table>
