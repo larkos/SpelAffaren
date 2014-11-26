@@ -29,6 +29,7 @@ namespace SpelDatabas
         public int GenreId { get; set; }
         public int UtgivareId { get; set; }
         public int UtgivareId1 { get; set; }
+        public int Beställningar { get; set; }
     
         public virtual ICollection<Konsol> Konsol { get; set; }
         public virtual ICollection<Genre> Genre { get; set; }

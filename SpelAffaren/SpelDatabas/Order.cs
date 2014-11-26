@@ -23,6 +23,7 @@ namespace SpelDatabas
         public int PersonId { get; set; }
         public string Kommentar { get; set; }
         public int PersonerId { get; set; }
+        public System.DateTime Datum { get; set; }
     
         public virtual Personer Personer { get; set; }
         public virtual ICollection<SpelPerOrder> SpelPerOrder { get; set; }

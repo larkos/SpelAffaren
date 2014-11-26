@@ -32,14 +32,16 @@ namespace SpelAffarWCF
         [Display(Name = "Id")]
         public int Id { get; set; }
         [Display(Name = "Person som gjort order")]
-        public PersonerDto Person { get; set; }
+        public int PersonId { get; set; }
         [Display(Name = "Kommentar")]
         public string Kommentar { get; set; }
         [Display(Name = "Spel i ordern")]
         public List<SpelPerOrderDto> SpelPerOrders { get; set; }
+        [Display(Name = "Datum för order")]
+        public DateTime Datum { get; set; }
     }
 
-    public class PersonerDto
+    public class PersonDto
     {
         [Display(Name = "Id")]
         public int Id { get; set; }
@@ -51,8 +53,6 @@ namespace SpelAffarWCF
         public string LogOnEmail { get; set; }
         [Display(Name = "Lösenord")]
         public string Lösenord { get; set; }
-        [Display(Name = "Adminstatus")]
-        public bool AdminStatus { get; set; }
         [Display(Name = "Ordrar")]
         public List<OrderDto> Ordrar { get; set; }
     }
@@ -75,6 +75,8 @@ namespace SpelAffarWCF
         public List<SpelPerOrderDto> SpelPerOrders { get; set; }
         [Display(Name = "Utgivare")]
         public UtgivareDto Utgivare { get; set; }
+        [Display(Name = "Beställningar")]
+        public int Beställningar { get; set; }
     }
 
     public class SpelPerOrderDto
@@ -82,9 +84,9 @@ namespace SpelAffarWCF
         [Display(Name = "Antal av spelet")]
         public int Antal { get; set; }
         [Display(Name = "Spelet")]
-        public ProduktDto Produkt { get; set; }
+        public int SpelId { get; set; }
         [Display(Name = "Order")]
-        public OrderDto Order { get; set; }
+        public int OrderId { get; set; }
     }
 
     public class UtgivareDto
