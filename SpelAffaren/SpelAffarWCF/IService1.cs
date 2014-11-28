@@ -17,6 +17,12 @@ namespace SpelAffarWCF
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
+        [OperationContract]
+        List<ProduktDto> GetAllProducts();
+
+        [OperationContract]
+        ProduktDto GetProduct(int value);
+
         // TODO: Add your service operations here
     }
 

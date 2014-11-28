@@ -1,0 +1,35 @@
+﻿@model List<SpelAffarWCF.ProduktDto>
+
+<table>
+    
+            @foreach(var product in Model)
+        {
+                <tr>
+
+                    <td>
+                        @Html.HiddenFor(item=>product.Id)
+                        @Html.DisplayFor(item => product.Namn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => product.Genres)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => product.Konsoler)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => product.Utgivare)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => product.Utgivningsår)
+                    </td>
+                    <td>
+                        <input type="button" value="Add to cart" onclick="AddToCart(@product.Id)" />
+                    </td>
+                </tr>
+                    }
+
+
+
+
+
+</table>
