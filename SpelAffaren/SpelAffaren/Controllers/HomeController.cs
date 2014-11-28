@@ -37,9 +37,9 @@ namespace SpelAffaren.Controllers
             
             MinKV.CartCostCount();
 
-            Service1 service = new Service1();
+            SpelAffarService service = new SpelAffarService();
 
-            List<ProduktDto> response = service.GetAllProducts();
+            List<ProduktDto> response = service.HämtaProdukter();
             //ViewBag.message = " this repo was created" + myrepo.ToString()+" and your cookie is "+mycookie+" there is a shopping cart with number "+MinKV.Owner+" that contains "+MinKV.Products.Count()+" Items and was created "+MinKV.Skapad;
             return View(new TheShopModel { Cart = MinKV,ProductsInCategory=response});
         }
@@ -74,8 +74,8 @@ namespace SpelAffaren.Controllers
             Kundvagn KV = (from k in KundvagnsRepo._repo.Kundvagnar where k.Owner == int.Parse(Request.Cookies["Klient"].Value) select k).FirstOrDefault();
 
             //ProduktDto exist = (from list in KV.Products where list.Id == sp select list).FirstOrDefault();
-            Service1 connect = new Service1();
-            ProduktDto exist = connect.GetProduct(sp);
+            SpelAffarService connect = new SpelAffarService();
+            ProduktDto exist = connect.HämtaProdukt(sp);
             //if(exist != null)
             //{
             //    exist.antal += sp.antal;
