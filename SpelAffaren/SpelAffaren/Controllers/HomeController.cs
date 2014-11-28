@@ -4,13 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SpelAffaren.Models;
+using SpelAffarWCF;
 namespace SpelAffaren.Controllers
 {
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            KundvagnsRepo.initRepo();
+           KundvagnsRepo.initRepo();
             KundvagnsRepo._repo.Kundvagnar.Add(new Kundvagn(Response,Request));
 
             //Funktion för hämta det populäraste produkterna//
@@ -27,16 +28,20 @@ namespace SpelAffaren.Controllers
 
             string mycookie = Request.Cookies["Klient"].Value;
             Kundvagn MinKV = (from k in KundvagnsRepo._repo.Kundvagnar where k.Owner == int.Parse(mycookie) select k).FirstOrDefault();
-            if(MinKV.Products.Count()<1)
-            {
-                MinKV.Products.Add(new spelprodukt() { antal = 2, Beskriving = "Bomber o granater", Namn = "Pirater!", UtgivningsAr = 1992, pris = 149, Spelkostnad = 149 * 2, GenreId = 1, KonsolId = 2, Id = 12 });
-                MinKV.Products.Add(new spelprodukt() { antal = 2, Beskriving = "a false accusation", Namn = "The False accusation", UtgivningsAr = 1988, pris = 249, Spelkostnad = 249 * 2, GenreId = 1, KonsolId = 2, Id = 13 });
-                MinKV.Products.Add(new spelprodukt() { antal = 2, Beskriving = "Star wars", Namn = "Star Wars", UtgivningsAr = 1978, pris = 449, Spelkostnad = 449 * 2, GenreId = 1, KonsolId = 2, Id = 14 });
-            }
+            //if(MinKV.Products.Count()<1)
+            //{
+            //    MinKV.Products.Add(new spelprodukt() { antal = 2, Beskriving = "Bomber o granater", Namn = "Pirater!", UtgivningsAr = 1992, pris = 149, Spelkostnad = 149 * 2, GenreId = 1, KonsolId = 2, Id = 12 });
+            //    MinKV.Products.Add(new spelprodukt() { antal = 2, Beskriving = "a false accusation", Namn = "The False accusation", UtgivningsAr = 1988, pris = 249, Spelkostnad = 249 * 2, GenreId = 1, KonsolId = 2, Id = 13 });
+            //    MinKV.Products.Add(new spelprodukt() { antal = 2, Beskriving = "Star wars", Namn = "Star Wars", UtgivningsAr = 1978, pris = 449, Spelkostnad = 449 * 2, GenreId = 1, KonsolId = 2, Id = 14 });
+            //}
             
             MinKV.CartCostCount();
+
+            Service1 service = new Service1();
+
+            List<ProduktDto> response = service.GetAllProducts();
             //ViewBag.message = " this repo was created" + myrepo.ToString()+" and your cookie is "+mycookie+" there is a shopping cart with number "+MinKV.Owner+" that contains "+MinKV.Products.Count()+" Items and was created "+MinKV.Skapad;
-            return View(new TheShopModel() { Cart = MinKV });
+            return View(new TheShopModel { Cart = MinKV,ProductsInCategory=response});
         }
 
         public PartialViewResult ShoppingCart()
@@ -64,23 +69,24 @@ namespace SpelAffaren.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddProdukt(spelprodukt sp)
+        public PartialViewResult AddProdukt(int sp)
         {
             Kundvagn KV = (from k in KundvagnsRepo._repo.Kundvagnar where k.Owner == int.Parse(Request.Cookies["Klient"].Value) select k).FirstOrDefault();
 
-            spelprodukt exist = (from list in KV.Products where list.Id == sp.Id select list).FirstOrDefault();
+            //ProduktDto exist = (from list in KV.Products where list.Id == sp select list).FirstOrDefault();
+            Service1 connect = new Service1();
+            ProduktDto exist = connect.GetProduct(sp);
+            //if(exist != null)
+            //{
+            //    exist.antal += sp.antal;
+            //    exist.Spelkostnad += sp.Spelkostnad;
+            //}
+            //else
+            //{
+                KV.Products.Add(exist);
+            //}
 
-            if(exist != null)
-            {
-                exist.antal += sp.antal;
-                exist.Spelkostnad += sp.Spelkostnad;
-            }
-            else
-            {
-                KV.Products.Add(sp);
-            }
-
-            return RedirectToAction("About");
+            return PartialView("ShoppingCart",KV);
         }
 
         [HttpPost]
@@ -88,7 +94,7 @@ namespace SpelAffaren.Controllers
         {
             Kundvagn KV = (from k in KundvagnsRepo._repo.Kundvagnar where k.Owner == int.Parse(Request.Cookies["Klient"].Value) select k).FirstOrDefault();
 
-            spelprodukt exist = (from list in KV.Products where list.Id == int.Parse(id) select list).FirstOrDefault();
+            ProduktDto exist = (from list in KV.Products where list.Id == int.Parse(id) select list).FirstOrDefault();
             KV.Products.Remove(exist);
 
             return PartialView("ShoppingCart", KV);
@@ -104,14 +110,25 @@ namespace SpelAffaren.Controllers
             {
 
                 
-                spelprodukt tochange = (from p in change.Products where p.Id == produkt[i].id select p).FirstOrDefault();
+                ProduktDto tochange = (from p in change.Products where p.Id == produkt[i].id select p).FirstOrDefault();
 
-                tochange.antal = produkt[i].antal;
-                tochange.Spelkostnad = produkt[i].antal * tochange.pris;
+                
+                //tochange.Spelkostnad = produkt[i].antal * tochange.pris;
             }
            
             
             return PartialView("ShoppingCart",change);
+        }
+
+        [HttpPost]
+        public PartialViewResult GetByGenre(int Genre)
+        {
+            //Den här kodbiten kan komma att ändras beroende på hur de ser ut//
+            List<ProduktDto> ProdByGenre = new List<ProduktDto>();
+
+
+            
+            return PartialView("ShoppingCart", ProdByGenre);
         }
 
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using SpelAffarWCF;
 namespace SpelAffaren.Models
 {
     public class KundvagnsRepo
@@ -47,8 +47,8 @@ namespace SpelAffaren.Models
     {
         public int Owner { get; set; }
 
-        public List<spelprodukt> Products { get; set; }
-        public spelprodukt heading = new spelprodukt();
+        public List<ProduktDto> Products { get; set; }
+        public ProduktDto heading = new ProduktDto();
         public DateTime Skapad { get; set; }
         public double Totalt { get; set; }
 
@@ -71,7 +71,7 @@ namespace SpelAffaren.Models
 
                 Response.Cookies.Add(KartOwner);
                 Owner = int.Parse(KartOwner.Value);
-                Products = new List<spelprodukt>();
+                Products = new List<ProduktDto>();
                 Skapad = DateTime.Now;
 
                 KundvagnsRepo._repo.Kundvagnar.Add(new Kundvagn { Owner = Owner, Products = Products, Skapad = Skapad });
@@ -92,13 +92,13 @@ namespace SpelAffaren.Models
 
         }
 
-      public void AddToCart(spelprodukt sp,string Owner)
+      public void AddToCart(ProduktDto sp,string Owner)
         {
           Kundvagn KV=KundvagnsRepo._repo.GetMyKV(Owner);
           KV.Products.Add(sp);
           CartCostCount();
         }
-        public void DeleteFromCart(spelprodukt sp,string Owner)
+        public void DeleteFromCart(ProduktDto sp,string Owner)
       {
               Kundvagn KV=KundvagnsRepo._repo.GetMyKV(Owner);
           KV.Products.Remove(sp);
@@ -107,9 +107,9 @@ namespace SpelAffaren.Models
 
         public void CartCostCount()
         {
-            foreach(spelprodukt sp in this.Products)
+            foreach(ProduktDto sp in this.Products)
             {
-                this.Totalt += sp.antal * sp.pris;
+                //this.Totalt += sp.prs;
             }
         }
     }
