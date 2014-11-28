@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/25/2014 11:09:49
+-- Date Created: 11/26/2014 14:32:46
 -- Generated from EDMX file: C:\Repo\Grupparbete\SpelAffaren\SpelAffaren\SpelDatabas\SpelDatabas.edmx
 -- --------------------------------------------------
 
@@ -87,7 +87,8 @@ CREATE TABLE [dbo].[ProduktSet] (
     [Utgivningsår] int  NOT NULL,
     [GenreId] int  NOT NULL,
     [UtgivareId] int  NOT NULL,
-    [UtgivareId1] int  NOT NULL
+    [UtgivareId1] int  NOT NULL,
+    [Beställningar] int  NOT NULL
 );
 GO
 
@@ -121,7 +122,8 @@ CREATE TABLE [dbo].[OrderSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [PersonId] int  NOT NULL,
     [Kommentar] nvarchar(max)  NOT NULL,
-    [PersonerId] int  NOT NULL
+    [PersonerId] int  NOT NULL,
+    [Datum] datetime  NOT NULL
 );
 GO
 

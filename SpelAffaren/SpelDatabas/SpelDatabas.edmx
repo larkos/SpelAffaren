@@ -60,6 +60,7 @@
     <Property Name="GenreId" Type="int" Nullable="false" />
     <Property Name="UtgivareId" Type="int" Nullable="false" />
     <Property Name="UtgivareId1" Type="int" Nullable="false" />
+    <Property Name="Beställningar" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="KonsolSet">
     <Key>
@@ -94,6 +95,7 @@
     <Property Name="PersonId" Type="int" Nullable="false" />
     <Property Name="Kommentar" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PersonerId" Type="int" Nullable="false" />
+    <Property Name="Datum" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="SpelPerOrderSet">
     <Key>
@@ -276,6 +278,7 @@
           <Property Name="UtgivareId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Utgivare" Relationship="SpelDatabas.UtgivareProdukt" FromRole="Produkt" ToRole="Utgivare" />
           <Property Name="UtgivareId1" Type="Int32" Nullable="false" />
+          <Property Name="Beställningar" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Konsol">
           <Key>
@@ -319,6 +322,7 @@
           <NavigationProperty Name="Personer" Relationship="SpelDatabas.PersonerOrder" FromRole="Order" ToRole="Personer" />
           <Property Name="PersonerId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="SpelPerOrder" Relationship="SpelDatabas.SpelPerOrderOrder" FromRole="Order" ToRole="SpelPerOrder" />
+          <Property Name="Datum" Type="DateTime" Nullable="false" />
         </EntityType>
         <EntityType Name="SpelPerOrder">
           <Key>
@@ -408,6 +412,7 @@
           <ScalarProperty Name="GenreId" ColumnName="GenreId" />
           <ScalarProperty Name="UtgivareId" ColumnName="UtgivareId" />
           <ScalarProperty Name="UtgivareId1" ColumnName="UtgivareId1" />
+          <ScalarProperty Name="Beställningar" ColumnName="Beställningar" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -446,6 +451,7 @@
           <ScalarProperty Name="PersonId" ColumnName="PersonId" />
           <ScalarProperty Name="Kommentar" ColumnName="Kommentar" />
           <ScalarProperty Name="PersonerId" ColumnName="PersonerId" />
+          <ScalarProperty Name="Datum" ColumnName="Datum" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
