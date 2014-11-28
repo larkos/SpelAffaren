@@ -61,11 +61,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.heading.antal)
+            @*@Html.DisplayNameFor(model => model.heading.)*@
+            Här ska det vara antal
             @*@Html.DisplayNameFor(model => model.)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.heading.pris)
+            @*@Html.DisplayNameFor(model => model.heading.pris)*@
+            här ska det vara pris
         </th>
         <th>
             @Html.DisplayNameFor(model => model.heading.Namn)
@@ -83,7 +85,7 @@
             @Html.DisplayNameFor(model => model.heading.UtgivningsAr)
         </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.heading.Spelkostnad)
+            @*@Html.DisplayNameFor(model => model.heading.Spelkostnad)*@
         </th>
     </tr>
 
@@ -96,10 +98,10 @@
         </td>*@
         <td>
            @Html.HiddenFor(modelItem => Model.Products[item].Id,new {id=item,@class="updatefunc"})
-            <input type="number" value="@Model.Products[item].antal" class="itemantal"/>
+            <input type="number" @*value="@Model.Products[item].antal"*@ class="itemantal"/>
         </td>
         <td>
-             @Html.DisplayFor(modelItem => Model.Products[item].pris)
+             @*@Html.DisplayFor(modelItem => Model.Products[item].pris)*@
            
         </td>
         <td>
@@ -117,9 +119,11 @@
         @*<td>
             @Html.DisplayFor(modelItem => item.UtgivningsAr)
         </td>*@
-
         <td>
-            @Html.DisplayFor(modelItem => Model.Products[item].Spelkostnad)
+            @*@Html.DisplayFor(modelitem=>item.)*@
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => Model.Products[item].Spelkostnad)*@
         </td>
        <td>
            <input type="button" value="Remove from Cart" onclick="removefromcart(@item);" />
