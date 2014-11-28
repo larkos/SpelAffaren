@@ -8,15 +8,15 @@
         <EntityTypeShape EntityType="SpelDatabas.Produkt" Width="1.5" PointX="1.375" PointY="0.5" />
         <EntityTypeShape EntityType="SpelDatabas.Konsol" Width="1.5" PointX="3.625" PointY="0.5" />
         <AssociationConnector Association="SpelDatabas.KonsolProdukt" />
-        <EntityTypeShape EntityType="SpelDatabas.Genre" Width="1.5" PointX="3.25" PointY="3.875" />
+        <EntityTypeShape EntityType="SpelDatabas.Genre" Width="1.5" PointX="3.375" PointY="2.25" />
         <EntityTypeShape EntityType="SpelDatabas.Personer" Width="1.5" PointX="5.5" PointY="0.5" />
-        <EntityTypeShape EntityType="SpelDatabas.Order" Width="1.5" PointX="7.375" PointY="1.75" />
-        <EntityTypeShape EntityType="SpelDatabas.SpelPerOrder" PointX="5.375" PointY="3.375" Width="1.5" />
+        <EntityTypeShape EntityType="SpelDatabas.Order" Width="1.5" PointX="5.5" PointY="3.25" />
+        <EntityTypeShape EntityType="SpelDatabas.SpelPerOrder" PointX="3.375" PointY="4.125" Width="1.5" />
         <AssociationConnector Association="SpelDatabas.PersonerOrder" />
         <AssociationConnector Association="SpelDatabas.ProduktGenre" />
         <AssociationConnector Association="SpelDatabas.ProduktSpelPerOrder" />
         <AssociationConnector Association="SpelDatabas.SpelPerOrderOrder" />
-        <EntityTypeShape EntityType="SpelDatabas.Utgivare" Width="1.5" PointX="0.75" PointY="4.25" />
+        <EntityTypeShape EntityType="SpelDatabas.Utgivare" Width="1.5" PointX="0.875" PointY="5" />
         <AssociationConnector Association="SpelDatabas.UtgivareProdukt" />
       </Diagram>
     </edmx:Diagrams>

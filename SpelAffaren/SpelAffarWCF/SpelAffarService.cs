@@ -36,9 +36,13 @@ namespace SpelAffarWCF
                             select new ProduktDto
                             {
                                 Beställningar = produkt.Beställningar,
+                                Pris = produkt.Pris,
+                                Betyg = produkt.Betyg,
                                 Id = produkt.Id,
                                 Namn = produkt.Namn,
                                 Beskrivning = produkt.Beskrivning,
+                                Multiplayer = produkt.Multiplayer,
+                                Singleplayer = produkt.Singleplayer,
                                 Konsoler = konsoler,
                                 Genres = genres,
                                 SpelPerOrders = spelPerOrders,
@@ -77,11 +81,15 @@ namespace SpelAffarWCF
                         select new ProduktDto
                         {
                             Beställningar = produkt.Beställningar,
+                            Betyg = produkt.Betyg,
+                            Pris = produkt.Pris,
                             Id = produkt.Id,
                             Namn = produkt.Namn,
                             Beskrivning = produkt.Beskrivning,
                             Konsoler = konsoler,
                             Genres = genres,
+                            Multiplayer = produkt.Multiplayer,
+                            Singleplayer = produkt.Singleplayer,
                             SpelPerOrders = spelPerOrders,
                             Utgivare = new UtgivareDto
                             {
@@ -122,7 +130,7 @@ namespace SpelAffarWCF
                     Efternamn = person.Efternamn,
                     LogOnEmail = person.LogOnEmail,
                     Lösenord = person.Lösenord,
-                    Id = person.Id == null ? 0 : person.Id,
+                    Id = person.Id,
                 };
 
                 if (person.Order != null)
@@ -147,6 +155,25 @@ namespace SpelAffarWCF
                 }
 
                 return personDto;
+            }
+        }
+
+        public List<ProduktDto> GetTopListGames(int antal)
+        {
+            using (var db = new SpelDatabasContainer())
+            {
+                //var list = new List<ProduktDto>();
+                //foreach (var item in db.GetTopListGames(antal).ToList())
+                //{
+                //    list.Add(new ProduktDto
+                //    {
+                //        Id = item.Id,
+                //        Namn = item.Namn,
+                //        Beställningar = item.Beställningar,
+                //        Utgivningsår = item.Utgivningsår
+                //    });
+                //}
+                return new List<ProduktDto>();
             }
         }
 

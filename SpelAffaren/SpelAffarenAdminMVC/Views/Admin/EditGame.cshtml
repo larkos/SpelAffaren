@@ -23,10 +23,23 @@
             @Html.Label("Utgivningsår", new { @class = "control-label" })
             @Html.Editor("utgivningsår", new { htmlAttributes = new { @class = "form-control", style = "width:60%;" } })
          </div>
+         <div class="form-group">
+            @Html.Label("Pris", new { @class = "control-label" })
+            @Html.Editor("pris", new { htmlAttributes = new { @class = "form-control" } })
+         </div>
+      </div>
          <div class="col-md-3 col-sm-6">
             <div class="form-group">
                @Html.Label("Konsol", new { @class = "control-label" })
                @Html.ListBox("Konsoler", db.KonsolSet.Select(k => new SelectListItem { Text = k.Namn, Value = k.Id.ToString() }), new { @class = "form-control", style = "height:178px;" })
+            </div>
+            <div class="form-group">
+               @Html.Label("Multiplayer")
+               @Html.CheckBox("multiplayer", new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="form-group">
+               @Html.Label("Singleplayer")
+               @Html.CheckBox("singleplayer", new { htmlAttributes = new { @class = "form-control" } })
             </div>
          </div>
          <div class="col-md-3 col-sm-6">
@@ -35,7 +48,7 @@
                @Html.ListBox("genres", db.GenreSet.Select(t => new SelectListItem { Text = t.Namn, Value = t.Id.ToString() }), new { @class = "form-control", style = "height:178px;" })
             </div>
          </div>
-         <div class="col-md-3 col-s-6">
+         <div class="col-md-3 col-sm-6">
             <div class="form-group">
                @Html.Label("Beskrivning", new { @class = "control-label" })
                @Html.TextArea("beskrivning", new { @class = "form-control", style = "height:178px;" })
@@ -49,7 +62,6 @@
             </div>
          </div>
       </div>
-   </div>
 }
 
 <div class="row">

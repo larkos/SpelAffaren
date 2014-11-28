@@ -21,7 +21,7 @@ namespace SpelAffarenAdminMVC.Controllers
             }
         }
 
-        public void PopulateDatabase()
+        public ActionResult PopulateDatabase()
         {
             using (var db = new SpelDatabasContainer())
             {
@@ -45,6 +45,7 @@ namespace SpelAffarenAdminMVC.Controllers
                 db.GenreSet.Add(new Genre { Namn = "Racing" });
                 db.GenreSet.Add(new Genre { Namn = "MOBA" });
                 db.GenreSet.Add(new Genre { Namn = "Free2Play" });
+                db.GenreSet.Add(new Genre { Namn = "Tredje Person" });
                 db.SaveChanges();
 
                 db.KonsolSet.Add(new Konsol { Namn = "Playstation 3" });
@@ -67,11 +68,12 @@ namespace SpelAffarenAdminMVC.Controllers
                 db.UtgivareSet.Add(new Utgivare { Namn = "Telltale Games" });
                 db.SaveChanges();
             }
+            return View("Index");
         }
 
         public ActionResult Index()
         {
-            
+
             return View();
         }
 
@@ -83,7 +85,7 @@ namespace SpelAffarenAdminMVC.Controllers
             using (var db = new SpelDatabasContainer())
             {
                 var utgivare = new Utgivare { Namn = name };
-               
+
                 db.UtgivareSet.Add(utgivare);
                 db.Entry(utgivare).State = EntityState.Added;
                 db.SaveChanges();
@@ -153,7 +155,7 @@ namespace SpelAffarenAdminMVC.Controllers
             using (var db = new SpelDatabasContainer())
             {
                 var konsol = new Konsol { Namn = name };
-               
+
                 db.KonsolSet.Add(konsol);
                 db.Entry(konsol).State = EntityState.Added;
                 db.SaveChanges();
@@ -286,7 +288,7 @@ namespace SpelAffarenAdminMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateGame(string name, string utgivareId, string[] konsoler, string[] genres, string beskrivning, string utgivningsår)
+        public ActionResult CreateGame(string name, string utgivareId, string[] konsoler, string[] genres, string beskrivning, string utgivningsår, string pris, bool multiplayer, bool singleplayer)
         {
             using (var db = new SpelDatabasContainer())
             {
@@ -301,6 +303,8 @@ namespace SpelAffarenAdminMVC.Controllers
                     Utgivningsår = int.Parse(utgivningsår),
                     Beskrivning = beskrivning,
                     UtgivareId = utgId,
+                    Multiplayer = multiplayer,
+                    Singleplayer = singleplayer
                 };
                 var intKonsoler = konsoler.Select(int.Parse).ToArray();
                 var intGenres = genres.Select(int.Parse).ToArray();
@@ -340,13 +344,13 @@ namespace SpelAffarenAdminMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditGame(int id, string namn, string utgivare, string[] konsoler, string[] genres, string beskrivning, string utgivningsår)
+        public ActionResult EditGame(int id, string namn, string utgivare, string[] konsoler, string[] genres, string beskrivning, string utgivningsår, string pris, bool multiplayer, bool singleplayer)
         {
             using (var db = new SpelDatabasContainer())
             {
                 var spel = (from s in db.ProduktSet
-                                where s.Id == id
-                                select s).FirstOrDefault();
+                            where s.Id == id
+                            select s).FirstOrDefault();
                 if (spel != null)
                 {
                     spel.Namn = namn == null ? spel.Namn : namn;
@@ -356,6 +360,12 @@ namespace SpelAffarenAdminMVC.Controllers
                         spel.Beskrivning = beskrivning;
                     if (utgivningsår != null)
                         spel.Utgivningsår = int.Parse(utgivningsår);
+                    if (pris != null)
+                        spel.Pris = int.Parse(pris);
+                    if (multiplayer == true)
+                        spel.Multiplayer = true;
+                    if (singleplayer == true)
+                        spel.Singleplayer = true;
 
                     var intKonsoler = konsoler == null ? new int[0] : konsoler.Select(int.Parse).ToArray();
                     var intGenres = genres == null ? new int[0] : genres.Select(int.Parse).ToArray();

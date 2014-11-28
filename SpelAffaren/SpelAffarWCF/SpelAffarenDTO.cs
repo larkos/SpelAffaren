@@ -77,6 +77,14 @@ namespace SpelAffarWCF
         public UtgivareDto Utgivare { get; set; }
         [Display(Name = "Beställningar")]
         public int Beställningar { get; set; }
+        [Display(Name = "Betyg")]
+        public double Betyg { get; set; }
+        [Display(Name = "Pris")]
+        public double Pris { get; set; }
+        [Display(Name = "Multiplayer")]
+        public bool Multiplayer { get; set; }
+        [Display(Name = "Singleplayer")]
+        public bool Singleplayer { get; set; }
     }
 
     public class SpelPerOrderDto

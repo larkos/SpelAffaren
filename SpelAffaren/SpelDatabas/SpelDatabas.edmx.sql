@@ -87,8 +87,11 @@ CREATE TABLE [dbo].[ProduktSet] (
     [Utgivningsår] int  NOT NULL,
     [GenreId] int  NOT NULL,
     [UtgivareId] int  NOT NULL,
-    [UtgivareId1] int  NOT NULL,
-    [Beställningar] int  NOT NULL
+	[Betyg] float default 0 NOT NULL,
+	[Pris] float  NOT NULL,
+    [Beställningar] int  NOT NULL,
+	[Multiplayer] bit default 0 NOT NULL,
+	[Singleplayer] bit default 0 NOT NULL
 );
 GO
 
@@ -308,7 +311,7 @@ GO
 -- Creating foreign key on [UtgivareId1] in table 'ProduktSet'
 ALTER TABLE [dbo].[ProduktSet]
 ADD CONSTRAINT [FK_UtgivareProdukt]
-    FOREIGN KEY ([UtgivareId1])
+    FOREIGN KEY ([UtgivareId])
     REFERENCES [dbo].[UtgivareSet]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -317,7 +320,7 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_UtgivareProdukt'
 CREATE INDEX [IX_FK_UtgivareProdukt]
 ON [dbo].[ProduktSet]
-    ([UtgivareId1]);
+    ([UtgivareId]);
 GO
 
 -- --------------------------------------------------

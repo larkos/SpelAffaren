@@ -20,6 +20,9 @@ namespace SpelAffarWCF
         PersonDto KollaKund(string firstName, string lastName, string logOnEmail, string lösenord);
 
         [OperationContract]
+        List<ProduktDto> GetTopListGames(int antal);
+
+        [OperationContract]
         OrderDto NyOrder(int kundId, int[] produkter, string kommentar);
     }
 }

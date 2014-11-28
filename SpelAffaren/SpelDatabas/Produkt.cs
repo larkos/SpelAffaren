@@ -16,6 +16,9 @@ namespace SpelDatabas
     {
         public Produkt()
         {
+            this.Betyg = 0D;
+            this.Multiplayer = false;
+            this.Singleplayer = false;
             this.Konsol = new HashSet<Konsol>();
             this.Genre = new HashSet<Genre>();
             this.SpelPerOrder = new HashSet<SpelPerOrder>();
@@ -27,9 +30,12 @@ namespace SpelDatabas
         public string Beskrivning { get; set; }
         public int Utgivningsår { get; set; }
         public int GenreId { get; set; }
-        public int UtgivareId { get; set; }
-        public int UtgivareId1 { get; set; }
         public int Beställningar { get; set; }
+        public int UtgivareId { get; set; }
+        public double Betyg { get; set; }
+        public double Pris { get; set; }
+        public bool Multiplayer { get; set; }
+        public bool Singleplayer { get; set; }
     
         public virtual ICollection<Konsol> Konsol { get; set; }
         public virtual ICollection<Genre> Genre { get; set; }
