@@ -26,7 +26,7 @@
                      <td>
                         @foreach (var utgSpel in utgivare.Produkt)
                         {
-                           <p class="cellEntity">@Html.ActionLink(utgSpel.Namn, "EditGame", null, new { id = utgSpel.Id, title = "Id: " + utgSpel.Id + " Namn: " + utgSpel.Namn + " Släppt: " + utgSpel.Utgivningsår + " Konsoler: " + utgSpel.Konsol.Count() })</p>
+                           <p class="cellEntity">@Html.ActionLink(utgSpel.Namn, "EditGame", new { id = utgSpel.Id })</p>
                         }
                      </td>
                   }
@@ -138,7 +138,7 @@
       <h3>Skapa ny genre</h3>
       @using (Html.BeginForm("CreateGenre", "Admin", FormMethod.Post))
       {
-         @Html.Editor("Name", null, new { @class = "form-control" })
+         @Html.Editor("Name", new { htmlAttributes = new { @class = "form-control" }})
          <input type="submit" class="btn btn-default" value="Skapa genre" />
       }
    </div>
@@ -156,6 +156,9 @@
             <th>Namn</th>
             <th>Beskrivning</th>
             <th>Utgivningsår</th>
+            <th>MP</th>
+            <th>SP</th>
+            <th>Pris</th>
             <th>Utgivare</th>
             <th>Konsoler</th>
             <th>Genres</th>
@@ -168,6 +171,9 @@
                <td title="Spelets jävla namn">@Html.ActionLink(spel.Namn, "EditGame", new { id = spel.Id })</td>
                <td title="@spel.Beskrivning">För musen över mig..</td>
                <td title="När det släpptes">@spel.Utgivningsår</td>
+               <td title="Multipläjer">@Html.CheckBox("checkboxMP", spel.Multiplayer)</td>
+               <td title="Singlpläjer">@Html.CheckBox("checkboxSP", spel.Singleplayer)</td>
+               <td title="Spelet kostar faktiskt såhär mycket">@spel.Pris:-</td>
                <td title="Id: @spel.Utgivare.Id, Spel: @spel.Utgivare.Produkt.Count()">@Html.ActionLink(spel.Utgivare.Namn, "EditPublisher", new { id = spel.Utgivare.Id })</td>
                @if (spel.Konsol.Count() > 0)
                {
@@ -180,7 +186,7 @@
                }
                else
                {
-                  <td>Finns inte till konsoler.</td>
+                  <td>Ingen.</td>
                }
                @if (spel.Genre.Count() > 0)
                {
@@ -223,7 +229,7 @@
       <div class="col-md-2 col-sm-4">
          <div class="form-group">
             @Html.Label("Namn")<br />
-            @Html.TextBox("Name", null, new  { @class = "form-control" })
+            @Html.TextBox("Name", null, new { @class = "form-control" })
          </div>
          <div class="form-group">
             @Html.Label("Utgivare")
@@ -233,11 +239,23 @@
             @Html.Label("Utgivningsår")
             @Html.Editor("Utgivningsår", new { htmlAttributes = new { @class = "form-control", style = "width:60%;" } })
          </div>
+         <div class="form-group">
+            @Html.Label("Pris")
+            @Html.Editor("pris", new { htmlAttributes = new { @class = "form-control", style = "width:60%;" } })
+         </div>
       </div>
       <div class="col-md-3 col-sm-6">
          <div class="form-group">
             @Html.Label("Vilka konsoler?")
             @Html.ListBox("Konsoler", db.KonsolSet.Select(k => new SelectListItem { Text = k.Namn, Value = k.Id.ToString() }).OrderBy(o => o.Text), new { @class = "form-control", style = "height:178px;" })
+         </div>
+         <div class="form-group">
+            @Html.Label("Multiplayer")
+            @Html.CheckBox("multiplayer", new { htmlAttributes = new { @class = "form-control" } })
+         </div>
+         <div class="form-group">
+            @Html.Label("Singleplayer")
+            @Html.CheckBox("singleplayer", new { htmlAttributes = new { @class = "form-control" } })
          </div>
       </div>
       <div class="col-md-3 col-sm-6">
@@ -255,8 +273,7 @@
    </div>
    <div class="row">
       <div class="col-md-3 col-sm-6">
-
+         <input type="submit" class="btn btn-primary" value="Skapa spel" />
       </div>
    </div>
-   <input type="submit" class="btn btn-primary" value="Skapa spel" />
 }
