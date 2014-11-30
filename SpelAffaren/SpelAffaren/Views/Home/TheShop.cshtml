@@ -51,6 +51,19 @@
 
         }
 
+        function GetGenre(genre)
+        {
+            $.ajax({
+                url: "/Home/GetByGenre",
+                type: "POST",
+                data: { Genre: genre },
+                success: function (result) {
+                    alert(result);
+                    $('#ProductsPresentation').html(result);
+                }
+            })
+        }
+
         function UpdateList() {
             var antalitem = document.getElementsByClassName("itemantal");
             var produktid = document.getElementsByClassName("updatefunc");
@@ -92,9 +105,29 @@
             @Html.Partial("ShoppingCart", Model.Cart)
         </div>
 
+<h4>Här är våra genrer</h4>
+<table>
+    <tr>
+        <th>
+          
+        </th>
+        <th>
+
+        </th>
+    </tr>
+    @foreach(var b in Model.AvaliableGenre)
+    { 
+    <tr>
+        <td>
+            <input type="button" value="@b.Namn" onclick="GetGenre(@b.Id)" />
+        </td>
+       
+    </tr>
+    }
+</table>
         <h3>Här är våra varor. Va Coolt!</h3>
 
-        <div >
+        <div id="ProductsPresentation">
             @Html.Partial("Products",Model.ProductsInCategory)
         </div>
 

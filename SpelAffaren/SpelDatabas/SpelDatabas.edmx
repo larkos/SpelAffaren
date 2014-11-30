@@ -185,6 +185,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetProductsByGenre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="GenreId" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="SpelDatabasStoreContainer">
           <EntitySet Name="GenreSet" EntityType="Self.GenreSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KonsolProdukt" EntityType="Self.KonsolProdukt" Schema="dbo" store:Type="Tables" />
@@ -264,6 +267,9 @@
             <End Role="Utgivare" EntitySet="UtgivareSet" />
             <End Role="Produkt" EntitySet="ProduktSet" />
           </AssociationSet>
+          <FunctionImport Name="GetProductsByGenre" EntitySet="ProduktSet" ReturnType="Collection(SpelDatabas.Produkt)">
+            <Parameter Name="GenreId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Produkt">
           <Key>
@@ -401,6 +407,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GetProductsByGenre_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Namn" Nullable="false" />
+          <Property Type="Int32" Name="KonsolId" Nullable="false" />
+          <Property Type="String" Name="Beskrivning" Nullable="false" />
+          <Property Type="Int32" Name="Utgivningsår" Nullable="false" />
+          <Property Type="Int32" Name="GenreId" Nullable="false" />
+          <Property Type="Int32" Name="UtgivareId" Nullable="false" />
+          <Property Type="Double" Name="Betyg" Nullable="false" />
+          <Property Type="Double" Name="Pris" Nullable="false" />
+          <Property Type="Int32" Name="Beställningar" Nullable="false" />
+          <Property Type="Boolean" Name="Multiplayer" Nullable="false" />
+          <Property Type="Boolean" Name="Singleplayer" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -497,6 +517,8 @@
         <ScalarProperty Name="Id" ColumnName="Genre_Id" />
       </EndProperty>
     </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="GetProductsByGenre" FunctionName="SpelDatabas.Store.GetProductsByGenre">
+          </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

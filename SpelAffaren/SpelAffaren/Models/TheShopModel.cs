@@ -10,6 +10,6 @@ namespace SpelAffaren.Models
 
         public Kundvagn Cart{ get; set; }
         public List<ProduktDto> ProductsInCategory {get;set;}
-        
+        public List<GenreDto> AvaliableGenre { get; set; }
     }
 }

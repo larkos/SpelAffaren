@@ -61,7 +61,7 @@ namespace SpelAffarWCF
         {
             using (var db = new SpelDatabasContainer())
             {
-                return (from produkt in db.ProduktSet
+                return (from produkt in db.ProduktSet where produkt.Id==produktId
                         let konsoler = produkt.Konsol.Select(konsol => new KonsolDto
                         {
                             Id = konsol.Id,
@@ -162,6 +162,7 @@ namespace SpelAffarWCF
         {
             using (var db = new SpelDatabasContainer())
             {
+                
                 //var list = new List<ProduktDto>();
                 //foreach (var item in db.GetTopListGames(antal).ToList())
                 //{
@@ -250,6 +251,46 @@ namespace SpelAffarWCF
                 }
                 return new OrderDto();
             }
+        }
+
+        public List<ProduktDto> HämtaFrånGenre(int GenreId)
+        {
+            List<ProduktDto> returera = new List<ProduktDto>();
+
+            List<Produkt> products = new List<Produkt>();
+            using (var db=new SpelDatabasContainer())
+            {
+
+               products=db.GetProductsByGenre(GenreId).ToList();
+            }
+
+            //Detta ska ändras i mapping
+            foreach (Produkt g in products)
+            {
+                returera.Add(new ProduktDto() { Id = g.Id, Namn = g.Namn ,Pris=g.Pris,Beskrivning=g.Beskrivning});
+            }
+            
+            return returera;
+        }
+
+        public List<GenreDto> GetAllGenre()
+        {
+             List<Genre> Genre=new List<Genre>();
+            List<GenreDto> NyGenres=new List<GenreDto>();
+
+            using ( var db=new SpelDatabasContainer())
+            {
+                Genre=db.GenreSet.ToList();
+
+                
+
+                //Detta ska ändras i mapping
+                foreach (Genre g in Genre)
+                {
+                    NyGenres.Add(new GenreDto() { Id = g.Id, Namn = g.Namn });
+                }
+            }
+            return NyGenres;
         }
     }
 }

@@ -89,55 +89,62 @@
         </th>
     </tr>
 
-@for (var item = 0; item < Model.Products.Count();item++ )
-{
-    
-    <tr>
-        @*<td>
-            @Html.HiddenFor(modelItem=>@item.Id)
-        </td>*@
-        <td>
-           @Html.HiddenFor(modelItem => Model.Products[item].Id,new {id=item,@class="updatefunc"})
-            <input type="number" @*value="@Model.Products[item].antal"*@ class="itemantal"/>
-        </td>
-        <td>
-             @*@Html.DisplayFor(modelItem => Model.Products[item].pris)*@
-           
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => Model.Products[item].Namn)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.GenreId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.KonsolId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Beskriving)
-        </td>*@
-        @*<td>
-            @Html.DisplayFor(modelItem => item.UtgivningsAr)
-        </td>*@
-        <td>
-            @*@Html.DisplayFor(modelitem=>item.)*@
-        </td>
-        <td>
-            @*@Html.DisplayFor(modelItem => Model.Products[item].Spelkostnad)*@
-        </td>
-       <td>
-           <input type="button" value="Remove from Cart" onclick="removefromcart(@item);" />
-       </td>
-    </tr>
-}
+   
+   @using (Html.BeginForm("Pay", "Home", FormMethod.Post))
+   {
+       for (var item = 0; item < Model.Products.Count(); item++)
+       {
+
+        <tr>
+            @*<td>
+                    @Html.HiddenFor(modelItem=>@item.Id)
+                </td>*@
+            <td>
+                @Html.HiddenFor(modelItem => Model.Products[item].Id, new { id = item, @class = "updatefunc" })
+                <input type="number" @*value="@Model.Products[item].antal"*@ class="itemantal" />
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => Model.Products[item].pris)*@
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Products[item].Namn)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.GenreId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KonsolId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Beskriving)
+                </td>*@
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.UtgivningsAr)
+                </td>*@
+            <td>
+                @*@Html.DisplayFor(modelitem=>item.)*@
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => Model.Products[item].Spelkostnad)*@
+            </td>
+            <td>
+                <input type="button" value="Remove from Cart" onclick="removefromcart(@item);" />
+            </td>
+        </tr>
+       }
     <tr>
         <th>
             Totalt kostnad
         </th>
         <td>
-            @Html.DisplayFor(model=>model.Totalt)
+            @Html.DisplayFor(model => model.Totalt)
         </td>
-        <td> <input type="button" value="I wanna pay!" /></td>
-        <td> <input type="button" value="Update my cart!" onclick="UpdateList()"/></td>
+        <td> <input type="submit" value="I wanna pay!" /></td>
+        <td> <input type="button" value="Update my cart!" onclick="UpdateList()" /></td>
     </tr>
+   }
+
+
+    
 </table>

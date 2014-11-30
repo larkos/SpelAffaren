@@ -11,12 +11,14 @@ namespace SpelAffaren.Controllers
     {
         public ActionResult Index()
         {
-           KundvagnsRepo.initRepo();
+           
+            KundvagnsRepo.initRepo();
             KundvagnsRepo._repo.Kundvagnar.Add(new Kundvagn(Response,Request));
 
             //Funktion för hämta det populäraste produkterna//
             List<spelprodukt> Populärast = new List<spelprodukt>();
-            Populärast.Add(new spelprodukt() { antal = 2, Beskriving = "a false accusation", Namn = "The False accusation", UtgivningsAr = 1988, pris = 249, Spelkostnad = 249 * 2, GenreId = 1, KonsolId = 2, Id = 13 });
+            
+            //Populärast.Add(new spelprodukt() { antal = 2, Beskriving = "a false accusation", Namn = "The False accusation", UtgivningsAr = 1988, pris = 249, Spelkostnad = 249 * 2, GenreId = 1, KonsolId = 2, Id = 13 });
             return View(Populärast);
         }
 
@@ -40,8 +42,10 @@ namespace SpelAffaren.Controllers
             SpelAffarService service = new SpelAffarService();
 
             List<ProduktDto> response = service.HämtaProdukter();
+
+
             //ViewBag.message = " this repo was created" + myrepo.ToString()+" and your cookie is "+mycookie+" there is a shopping cart with number "+MinKV.Owner+" that contains "+MinKV.Products.Count()+" Items and was created "+MinKV.Skapad;
-            return View(new TheShopModel { Cart = MinKV,ProductsInCategory=response});
+            return View(new TheShopModel { Cart = MinKV,ProductsInCategory=response,AvaliableGenre=service.GetAllGenre()});
         }
 
         public PartialViewResult ShoppingCart()
@@ -126,9 +130,17 @@ namespace SpelAffaren.Controllers
             //Den här kodbiten kan komma att ändras beroende på hur de ser ut//
             List<ProduktDto> ProdByGenre = new List<ProduktDto>();
 
-
+            SpelAffarService SAS = new SpelAffarService();
+            ProdByGenre=SAS.HämtaFrånGenre(Genre);
             
-            return PartialView("ShoppingCart", ProdByGenre);
+            return PartialView("Products", ProdByGenre);
+        }
+
+        [HttpPost]
+        public ActionResult Pay(Kundvagn MinKV)
+        {
+
+            return RedirectToAction("index");
         }
 
 

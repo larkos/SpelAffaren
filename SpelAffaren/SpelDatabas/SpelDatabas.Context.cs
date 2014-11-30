@@ -12,6 +12,8 @@ namespace SpelDatabas
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class SpelDatabasContainer : DbContext
     {
@@ -32,5 +34,23 @@ namespace SpelDatabas
         public virtual DbSet<Order> OrderSet { get; set; }
         public virtual DbSet<SpelPerOrder> SpelPerOrderSet { get; set; }
         public virtual DbSet<Utgivare> UtgivareSet { get; set; }
+    
+        public virtual ObjectResult<Produkt> GetProductsByGenre(Nullable<int> genreId)
+        {
+            var genreIdParameter = genreId.HasValue ?
+                new ObjectParameter("GenreId", genreId) :
+                new ObjectParameter("GenreId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Produkt>("GetProductsByGenre", genreIdParameter);
+        }
+    
+        public virtual ObjectResult<Produkt> GetProductsByGenre(Nullable<int> genreId, MergeOption mergeOption)
+        {
+            var genreIdParameter = genreId.HasValue ?
+                new ObjectParameter("GenreId", genreId) :
+                new ObjectParameter("GenreId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Produkt>("GetProductsByGenre", mergeOption, genreIdParameter);
+        }
     }
 }
