@@ -90,9 +90,9 @@
     </tr>
 
    
-   @using (Html.BeginForm("Pay", "Home", FormMethod.Post))
-   {
-       for (var item = 0; item < Model.Products.Count(); item++)
+   
+   
+       @for (var item = 0; item < Model.Products.Count(); item++)
        {
 
         <tr>
@@ -140,10 +140,10 @@
         <td>
             @Html.DisplayFor(model => model.Totalt)
         </td>
-        <td> <input type="submit" value="I wanna pay!" /></td>
+        <td> <input type="button" value="I wanna pay!" onclick="Pay()"/></td>
         <td> <input type="button" value="Update my cart!" onclick="UpdateList()" /></td>
     </tr>
-   }
+   
 
 
     

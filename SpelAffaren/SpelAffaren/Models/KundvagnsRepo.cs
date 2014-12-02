@@ -52,6 +52,14 @@ namespace SpelAffaren.Models
         public DateTime Skapad { get; set; }
         public double Totalt { get; set; }
 
+
+        public void cleanout_KundVagn()
+        {
+            List<ProduktDto> Ny = new List<ProduktDto>();
+            Products = Ny;
+            
+        }
+
         public Kundvagn()
         {
 

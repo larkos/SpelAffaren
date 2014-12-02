@@ -99,7 +99,17 @@
                 //}
             });
         }
-        </script>
+
+        function Pay()
+        {
+            $.ajax({
+                url: "/Home/Pay",
+                type: "POST",
+               
+               
+            });
+        }
+    </script>
         <h2>TheShop</h2>
         <div id="CartPlacer">
             @Html.Partial("ShoppingCart", Model.Cart)

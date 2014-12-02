@@ -247,6 +247,7 @@
     <Content Include="Views\Shared\MyTestShop.cshtml" />
     <Content Include="Views\Home\TheShop.cshtml" />
     <Content Include="Views\Shared\Products.cshtml" />
+    <Content Include="Views\Home\Pay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

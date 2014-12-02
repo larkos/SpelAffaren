@@ -101,6 +101,17 @@ namespace SpelAffarWCF
             }
         }
 
+        public int KollaId(string email)
+        {
+            int retur = 0;
+            using(var db=new SpelDatabasContainer())
+            {
+                retur = (from p in db.PersonerSet where p.LogOnEmail == email select p.Id).FirstOrDefault();
+            }
+
+            return retur;
+        }
+
         public PersonDto KollaKund(string firstName, string lastName, string logOnEmail, string lösenord)
         {
             using (var db = new SpelDatabasContainer())
@@ -133,26 +144,27 @@ namespace SpelAffarWCF
                     Id = person.Id,
                 };
 
-                if (person.Order != null)
-                {
-                    foreach (var order in person.Order)
-                    {
-                        var orderDto = new OrderDto();
-                        var spelOrderDto = new SpelPerOrderDto();
+                //if (person.Order != null)
+                //{
+                //    foreach (var order in person.Order)
+                //    {
+                //        var orderDto = new OrderDto();
+                //        var spelOrderDto = new SpelPerOrderDto();
 
-                        foreach (var spelOrder in order.SpelPerOrder)
-                        {
-                            spelOrderDto.Antal = spelOrder.Antal;
-                            spelOrderDto.OrderId = spelOrder.OrderId;
-                            spelOrderDto.SpelId = spelOrder.SpelId;
-                        }
-                        orderDto.Datum = order.Datum;
-                        orderDto.Id = order.Id;
-                        orderDto.Kommentar = order.Kommentar;
-                        orderDto.PersonId = order.PersonerId;
-                        orderDto.SpelPerOrders.Add(spelOrderDto);
-                    }
-                }
+                //        foreach (var spelOrder in order.SpelPerOrder)
+                //        {
+                //            spelOrderDto.Antal = spelOrder.Antal;
+                //            spelOrderDto.OrderId = spelOrder.OrderId;
+                //            spelOrderDto.SpelId = spelOrder.SpelId;
+                //        }
+                //        orderDto.Datum = order.Datum;
+                //        orderDto.Id = order.Id;
+                //        orderDto.Kommentar = order.Kommentar;
+                //        orderDto.PersonId = order.PersonerId;
+                //        if(spelOrderDto!=null)
+                //        orderDto.SpelPerOrders.Add(spelOrderDto);
+                //    }
+                //}
 
                 return personDto;
             }
@@ -292,5 +304,36 @@ namespace SpelAffarWCF
             }
             return NyGenres;
         }
+
+        //public void Pay(List<ProduktDto> bp, Personer Buyer)
+        //{
+
+            
+        //    using ( var db=new SpelDatabasContainer())
+        //    {
+        //        Order NyOrder = new Order() { Datum=DateTime.Now,Kommentar="Yay",Personer=Buyer};
+
+        //        List<Produkt> Unique = (from p in bp
+        //                                select new Produkt()
+        //                                {
+        //                                    Namn = p.Namn,
+        //                                    Konsol = (from k in db.KonsolSet where k.Id == p.Id select k).ToList(),
+        //                                    Beskrivning = p.Beskrivning,
+        //                                    Betyg = p.Betyg,
+        //                                    Singleplayer = p.Singleplayer,
+        //                                    Multiplayer = p.Multiplayer,
+        //                                    Pris = p.Pris,
+        //                                    Utgivningsår = p.Utgivningsår,
+        //                                    Utgivare = (from u in p.Utgivare select new Utgivare() {Id=u. })
+        //                                }).Distinct().ToList();
+        //        foreach(Produkt pd in Unique)
+        //        {
+        //            SpelPerOrder SPO = new SpelPerOrder() { Produkt=pd,Antal=(from s in bp where s.Id==pd.Id select s).ToList().Count(),Order=NyOrder};
+        //            db.SpelPerOrderSet.Add(SPO);
+        //        }
+        //        db.OrderSet.Add(NyOrder);
+        //        db.SaveChanges();
+        //    }
+        //}
     }
 }
