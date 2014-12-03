@@ -1,0 +1,42 @@
+﻿@model SpelAffarWCF.OrderDto
+
+@{
+    ViewBag.Title = "Pay";
+}
+
+<h2>Pay</h2>
+
+<div>
+    <h4>OrderDto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PersonId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PersonId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Kommentar)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kommentar)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Datum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Datum)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

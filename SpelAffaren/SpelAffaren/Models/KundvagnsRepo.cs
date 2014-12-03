@@ -52,6 +52,14 @@ namespace SpelAffaren.Models
         public DateTime Skapad { get; set; }
         public double Totalt { get; set; }
 
+
+        public void cleanout_KundVagn()
+        {
+            List<ProduktDto> Ny = new List<ProduktDto>();
+            Products = Ny;
+            
+        }
+
         public Kundvagn()
         {
 
@@ -95,7 +103,18 @@ namespace SpelAffaren.Models
       public void AddToCart(ProduktDto sp,string Owner)
         {
           Kundvagn KV=KundvagnsRepo._repo.GetMyKV(Owner);
-          KV.Products.Add(sp);
+
+          ProduktDto Exist = (from p in KV.Products where sp.Id == p.Id select p).FirstOrDefault();
+          //if(Exist!=null)
+          //{
+              
+          //}
+          //else
+          //{
+              KV.Products.Add(sp);
+          //}
+          
+
           CartCostCount();
         }
         public void DeleteFromCart(ProduktDto sp,string Owner)

@@ -43,5 +43,14 @@ namespace SpelDatabas
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetProductsByGenre>("GetProductsByGenre", genreIdParameter);
         }
+    
+        public virtual ObjectResult<Produkt> GetProductsByGenre(Nullable<int> genreId, MergeOption mergeOption)
+        {
+            var genreIdParameter = genreId.HasValue ?
+                new ObjectParameter("GenreId", genreId) :
+                new ObjectParameter("GenreId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Produkt>("GetProductsByGenre", mergeOption, genreIdParameter);
+        }
     }
 }

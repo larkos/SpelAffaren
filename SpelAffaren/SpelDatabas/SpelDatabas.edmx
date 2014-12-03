@@ -407,6 +407,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+<<<<<<< HEAD
         <ComplexType Name="GetProductsByGenre">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Namn" Nullable="false" />
@@ -414,6 +415,15 @@
           <Property Type="String" Name="Beskrivning" Nullable="false" />
           <Property Type="Int32" Name="Utgivningsår" Nullable="false" />
           <Property Type="Int32" Name="GenreId" Nullable="true" />
+=======
+        <ComplexType Name="GetProductsByGenre_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Namn" Nullable="false" />
+          <Property Type="Int32" Name="KonsolId" Nullable="false" />
+          <Property Type="String" Name="Beskrivning" Nullable="false" />
+          <Property Type="Int32" Name="Utgivningsår" Nullable="false" />
+          <Property Type="Int32" Name="GenreId" Nullable="false" />
+>>>>>>> 326c10b50739eb7a43b3c46cd2f723fb46f6f899
           <Property Type="Int32" Name="UtgivareId" Nullable="false" />
           <Property Type="Double" Name="Betyg" Nullable="false" />
           <Property Type="Double" Name="Pris" Nullable="false" />
@@ -518,6 +528,7 @@
       </EndProperty>
     </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="GetProductsByGenre" FunctionName="SpelDatabas.Store.GetProductsByGenre">
+<<<<<<< HEAD
             <ResultMapping>
               <ComplexTypeMapping TypeName="SpelDatabas.GetProductsByGenre">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -534,6 +545,8 @@
                 <ScalarProperty Name="Singleplayer" ColumnName="Singleplayer" />
               </ComplexTypeMapping>
             </ResultMapping>
+=======
+>>>>>>> 326c10b50739eb7a43b3c46cd2f723fb46f6f899
           </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>

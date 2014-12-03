@@ -51,7 +51,7 @@
     <Compile Include="Genre.cs">
       <DependentUpon>SpelDatabas.tt</DependentUpon>
     </Compile>
-    <Compile Include="GetProductsByGenre.cs">
+    <Compile Include="GetProductsByGenre_Result.cs">
       <DependentUpon>SpelDatabas.tt</DependentUpon>
     </Compile>
     <Compile Include="Konsol.cs">

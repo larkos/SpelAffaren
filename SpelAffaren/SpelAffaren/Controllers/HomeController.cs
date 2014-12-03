@@ -11,7 +11,8 @@ namespace SpelAffaren.Controllers
     {
         public ActionResult Index()
         {
-           KundvagnsRepo.initRepo();
+           
+            KundvagnsRepo.initRepo();
             KundvagnsRepo._repo.Kundvagnar.Add(new Kundvagn(Response,Request));
 
             SpelAffarWCF.SpelAffarService proxy = new SpelAffarService();
@@ -20,7 +21,8 @@ namespace SpelAffaren.Controllers
             //Funktion för hämta det populäraste produkterna//
             List<spelprodukt> Populärast = new List<spelprodukt>();
             Populärast.Add(new spelprodukt() { antal = 2, Beskriving = "a false accusation", Namn = "The False accusation", UtgivningsAr = 1988, pris = 249, Spelkostnad = 249 * 2, GenreId = 1, KonsolId = 2, Id = 13 });
-            return View(proxy);
+ 
+          return View(Populärast);
         }
 
         public ActionResult TheShop()
@@ -40,13 +42,19 @@ namespace SpelAffaren.Controllers
             
             MinKV.CartCostCount();
 
-
             SpelAffarService service = new SpelAffarService();
             // skicka med en lista med produkter till vyn istället för service som här nedan
 
             //List<ProduktDto> response = service.HämtaProdukter();
             //ViewBag.message = " this repo was created" + myrepo.ToString()+" and your cookie is "+mycookie+" there is a shopping cart with number "+MinKV.Owner+" that contains "+MinKV.Products.Count()+" Items and was created "+MinKV.Skapad;
             return View(new TheShopModel { Cart = MinKV, Service = service });
+
+            SpelAffarService service = new SpelAffarService();
+			// Lägg in här att hämta ifrån servicen GetProductsFromGenre
+            List<ProduktDto> response = service.HämtaProdukter();
+
+            //ViewBag.message = " this repo was created" + myrepo.ToString()+" and your cookie is "+mycookie+" there is a shopping cart with number "+MinKV.Owner+" that contains "+MinKV.Products.Count()+" Items and was created "+MinKV.Skapad;
+            return View(new TheShopModel { Cart = MinKV,ProductsInCategory=response,AvaliableGenre=service.GetAllGenre()});
         }
 
         public PartialViewResult ShoppingCart()
@@ -131,9 +139,37 @@ namespace SpelAffaren.Controllers
             //Den här kodbiten kan komma att ändras beroende på hur de ser ut//
             List<ProduktDto> ProdByGenre = new List<ProduktDto>();
 
-
+            SpelAffarService SAS = new SpelAffarService();
+            ProdByGenre=SAS.HämtaFrånGenre(Genre);
             
-            return PartialView("ShoppingCart", ProdByGenre);
+            return PartialView("Products", ProdByGenre);
+        }
+
+        [HttpPost]
+        public ActionResult Pay()
+        {
+            OrderDto retur = new OrderDto();
+            Kundvagn MinKV = (from k in KundvagnsRepo._repo.Kundvagnar where k.Owner == int.Parse(Request.Cookies["Klient"].Value) select k).FirstOrDefault();
+
+            SpelAffarService SAS = new SpelAffarService();
+            int[] Produkter = (from kv in MinKV.Products select kv.Id).ToArray();
+            string OrderComment = "";
+            PersonDto p = (PersonDto)Session["User"];
+            if (p != null)
+            {
+                retur = SAS.NyOrder(p.Id, Produkter, OrderComment);
+                MinKV.cleanout_KundVagn();
+            }
+
+            //SAS.Pay();
+            return RedirectToAction("Payment",retur);
+        }
+       
+        public ActionResult Payment(OrderDto od)
+        {
+
+
+            return View("Payment","Home",od);
         }
 
 

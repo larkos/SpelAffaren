@@ -145,7 +145,7 @@ namespace SpelAffarWCF
         {
             using (var db = new SpelDatabasContainer())
             {
-                return (from produkt in db.ProduktSet
+                return (from produkt in db.ProduktSet where produkt.Id==produktId
                         let konsoler = produkt.Konsol.Select(konsol => new KonsolDto
                         {
                             Id = konsol.Id,
@@ -185,6 +185,17 @@ namespace SpelAffarWCF
             }
         }
 
+        public int KollaId(string email)
+        {
+            int retur = 0;
+            using(var db=new SpelDatabasContainer())
+            {
+                retur = (from p in db.PersonerSet where p.LogOnEmail == email select p.Id).FirstOrDefault();
+            }
+
+            return retur;
+        }
+
         public PersonDto KollaKund(string firstName, string lastName, string logOnEmail, string lösenord)
         {
             using (var db = new SpelDatabasContainer())
@@ -217,26 +228,27 @@ namespace SpelAffarWCF
                     Id = person.Id,
                 };
 
-                if (person.Order != null)
-                {
-                    foreach (var order in person.Order)
-                    {
-                        var orderDto = new OrderDto();
-                        var spelOrderDto = new SpelPerOrderDto();
+                //if (person.Order != null)
+                //{
+                //    foreach (var order in person.Order)
+                //    {
+                //        var orderDto = new OrderDto();
+                //        var spelOrderDto = new SpelPerOrderDto();
 
-                        foreach (var spelOrder in order.SpelPerOrder)
-                        {
-                            spelOrderDto.Antal = spelOrder.Antal;
-                            spelOrderDto.OrderId = spelOrder.OrderId;
-                            spelOrderDto.SpelId = spelOrder.SpelId;
-                        }
-                        orderDto.Datum = order.Datum;
-                        orderDto.Id = order.Id;
-                        orderDto.Kommentar = order.Kommentar;
-                        orderDto.PersonId = order.PersonerId;
-                        orderDto.SpelPerOrders.Add(spelOrderDto);
-                    }
-                }
+                //        foreach (var spelOrder in order.SpelPerOrder)
+                //        {
+                //            spelOrderDto.Antal = spelOrder.Antal;
+                //            spelOrderDto.OrderId = spelOrder.OrderId;
+                //            spelOrderDto.SpelId = spelOrder.SpelId;
+                //        }
+                //        orderDto.Datum = order.Datum;
+                //        orderDto.Id = order.Id;
+                //        orderDto.Kommentar = order.Kommentar;
+                //        orderDto.PersonId = order.PersonerId;
+                //        if(spelOrderDto!=null)
+                //        orderDto.SpelPerOrders.Add(spelOrderDto);
+                //    }
+                //}
 
                 return personDto;
             }
@@ -246,6 +258,7 @@ namespace SpelAffarWCF
         {
             using (var db = new SpelDatabasContainer())
             {
+                
                 //var list = new List<ProduktDto>();
                 //foreach (var item in db.GetTopListGames(antal).ToList())
                 //{
@@ -297,6 +310,12 @@ namespace SpelAffarWCF
                         PersonId = order.PersonId,
                         SpelPerOrders = new List<SpelPerOrderDto>()
                     };
+
+                    IEnumerable<Produkt> FetchedProducts=produkter.Select(pId => (from p in db.ProduktSet
+                                                                         where pId == p.Id
+                                                                         select p).FirstOrDefault()).Where(prod => prod != null);
+
+                    produkter = ((from p in produkter select p).Distinct()).ToArray();
                     foreach (var produkt in produkter.Select(pId => (from p in db.ProduktSet
                                                                      where pId == p.Id
                                                                      select p).FirstOrDefault()).Where(prod => prod != null))
@@ -304,7 +323,7 @@ namespace SpelAffarWCF
                         var spelPerOrder = new SpelPerOrder { OrderId = order.Id };
                         var spelPerOrderDto = new SpelPerOrderDto { OrderId = order.Id };
 
-                        spelPerOrderDto.Antal++; // ska väl matcha hur många av samma element som fanns i int[] med spel?
+                        spelPerOrderDto.Antal=(from fp in FetchedProducts where fp.Id==produkt.Id select fp).Count(); // ska väl matcha hur många av samma element som fanns i int[] med spel?
                         spelPerOrderDto.SpelId = produkt.Id;
                         spelPerOrderDto.OrderId = order.Id;
                         orderDto.SpelPerOrders.Add(spelPerOrderDto);
@@ -313,9 +332,11 @@ namespace SpelAffarWCF
                         db.Entry(produkt).State = EntityState.Modified;
 
                         spelPerOrder.Produkt = produkt;
-                        spelPerOrder.Produkt.Beställningar++; // ska väl också matcha hur många av samma element som fanns i int[] med spel?
-                        spelPerOrder.Order = order;
-                        spelPerOrder.Antal++;
+
+                        spelPerOrder.Produkt.Beställningar += (from fp in FetchedProducts where fp.Id == produkt.Id select fp).Count(); // ska väl också matcha hur många av samma element som fanns i int[] med spel?
+                                                spelPerOrder.Order = order;
+                                                spelPerOrder.Antal = (from fp in FetchedProducts where fp.Id == produkt.Id select fp).Count();
+
                         spelPerOrder.SpelId = produkt.Id;
                         order.SpelPerOrder.Add(spelPerOrder);
 
@@ -335,5 +356,76 @@ namespace SpelAffarWCF
                 return new OrderDto();
             }
         }
+
+        public List<ProduktDto> HämtaFrånGenre(int GenreId)
+        {
+            List<ProduktDto> returera = new List<ProduktDto>();
+
+            List<Produkt> products = new List<Produkt>();
+            using (var db=new SpelDatabasContainer())
+            {
+
+               products=db.GetProductsByGenre(GenreId).ToList();
+            }
+
+            //Detta ska ändras i mapping
+            foreach (Produkt g in products)
+            {
+                returera.Add(new ProduktDto() { Id = g.Id, Namn = g.Namn ,Pris=g.Pris,Beskrivning=g.Beskrivning});
+            }
+            
+            return returera;
+        }
+
+        public List<GenreDto> GetAllGenre()
+        {
+             List<Genre> Genre=new List<Genre>();
+            List<GenreDto> NyGenres=new List<GenreDto>();
+
+            using ( var db=new SpelDatabasContainer())
+            {
+                Genre=db.GenreSet.ToList();
+
+                
+
+                //Detta ska ändras i mapping
+                foreach (Genre g in Genre)
+                {
+                    NyGenres.Add(new GenreDto() { Id = g.Id, Namn = g.Namn });
+                }
+            }
+            return NyGenres;
+        }
+
+        //public void Pay(List<ProduktDto> bp, Personer Buyer)
+        //{
+
+            
+        //    using ( var db=new SpelDatabasContainer())
+        //    {
+        //        Order NyOrder = new Order() { Datum=DateTime.Now,Kommentar="Yay",Personer=Buyer};
+
+        //        List<Produkt> Unique = (from p in bp
+        //                                select new Produkt()
+        //                                {
+        //                                    Namn = p.Namn,
+        //                                    Konsol = (from k in db.KonsolSet where k.Id == p.Id select k).ToList(),
+        //                                    Beskrivning = p.Beskrivning,
+        //                                    Betyg = p.Betyg,
+        //                                    Singleplayer = p.Singleplayer,
+        //                                    Multiplayer = p.Multiplayer,
+        //                                    Pris = p.Pris,
+        //                                    Utgivningsår = p.Utgivningsår,
+        //                                    Utgivare = (from u in p.Utgivare select new Utgivare() {Id=u. })
+        //                                }).Distinct().ToList();
+        //        foreach(Produkt pd in Unique)
+        //        {
+        //            SpelPerOrder SPO = new SpelPerOrder() { Produkt=pd,Antal=(from s in bp where s.Id==pd.Id select s).ToList().Count(),Order=NyOrder};
+        //            db.SpelPerOrderSet.Add(SPO);
+        //        }
+        //        db.OrderSet.Add(NyOrder);
+        //        db.SaveChanges();
+        //    }
+        //}
     }
 }
