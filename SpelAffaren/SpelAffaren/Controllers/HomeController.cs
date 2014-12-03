@@ -137,23 +137,30 @@ namespace SpelAffaren.Controllers
         }
 
         [HttpPost]
-        public ActionResult Pay(string OrderComment)
+        public ActionResult Pay()
         {
             OrderDto retur = new OrderDto();
             Kundvagn MinKV = (from k in KundvagnsRepo._repo.Kundvagnar where k.Owner == int.Parse(Request.Cookies["Klient"].Value) select k).FirstOrDefault();
-            
-            SpelAffarService SAS=new SpelAffarService();
+
+            SpelAffarService SAS = new SpelAffarService();
             int[] Produkter = (from kv in MinKV.Products select kv.Id).ToArray();
-            OrderComment = "";
-           PersonDto p = (PersonDto)Session["User"];
-if(p!=null)
-{
-    retur=SAS.NyOrder(p.Id,Produkter,OrderComment);
-    MinKV.cleanout_KundVagn();
-}
-            
+            string OrderComment = "";
+            PersonDto p = (PersonDto)Session["User"];
+            if (p != null)
+            {
+                retur = SAS.NyOrder(p.Id, Produkter, OrderComment);
+                MinKV.cleanout_KundVagn();
+            }
+
             //SAS.Pay();
-            return View("Pay",retur);
+            return RedirectToAction("Payment",retur);
+        }
+       
+        public ActionResult Payment(OrderDto od)
+        {
+
+
+            return View("Payment","Home",od);
         }
 
 

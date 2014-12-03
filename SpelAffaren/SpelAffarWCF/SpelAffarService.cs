@@ -226,6 +226,12 @@ namespace SpelAffarWCF
                         PersonId = order.PersonId,
                         SpelPerOrders = new List<SpelPerOrderDto>()
                     };
+
+                    IEnumerable<Produkt> FetchedProducts=produkter.Select(pId => (from p in db.ProduktSet
+                                                                         where pId == p.Id
+                                                                         select p).FirstOrDefault()).Where(prod => prod != null);
+
+                    produkter = ((from p in produkter select p).Distinct()).ToArray();
                     foreach (var produkt in produkter.Select(pId => (from p in db.ProduktSet
                                                                          where pId == p.Id
                                                                          select p).FirstOrDefault()).Where(prod => prod != null))
@@ -233,7 +239,7 @@ namespace SpelAffarWCF
                         var spelPerOrder = new SpelPerOrder { OrderId = order.Id };
                         var spelPerOrderDto = new SpelPerOrderDto { OrderId = order.Id };
 
-                        spelPerOrderDto.Antal++; // ska väl matcha hur många av samma element som fanns i int[] med spel?
+                        spelPerOrderDto.Antal=(from fp in FetchedProducts where fp.Id==produkt.Id select fp).Count(); // ska väl matcha hur många av samma element som fanns i int[] med spel?
                         spelPerOrderDto.SpelId = produkt.Id;
                         spelPerOrderDto.OrderId = order.Id;
                         orderDto.SpelPerOrders.Add(spelPerOrderDto);
@@ -242,9 +248,9 @@ namespace SpelAffarWCF
                         db.Entry(produkt).State = EntityState.Modified;
 
                         spelPerOrder.Produkt = produkt;
-                        spelPerOrder.Produkt.Beställningar++; // ska väl också matcha hur många av samma element som fanns i int[] med spel?
+                        spelPerOrder.Produkt.Beställningar += (from fp in FetchedProducts where fp.Id == produkt.Id select fp).Count(); // ska väl också matcha hur många av samma element som fanns i int[] med spel?
                                                 spelPerOrder.Order = order;
-                        spelPerOrder.Antal++;
+                                                spelPerOrder.Antal = (from fp in FetchedProducts where fp.Id == produkt.Id select fp).Count();
                         spelPerOrder.SpelId = produkt.Id;
                         order.SpelPerOrder.Add(spelPerOrder);
 

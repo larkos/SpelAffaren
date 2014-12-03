@@ -1,7 +1,27 @@
 ﻿@model List<SpelAffarWCF.ProduktDto>
 
 <table>
-    
+    <tr>
+        <th>
+            @Html.HiddenFor(item => Model[0].Id)
+            @Html.LabelFor(item => Model[0].Namn)
+        </th>
+        <th>
+            @Html.LabelFor(item => Model[0].Pris)
+        </th>
+        <th>
+            @Html.LabelFor(item => Model[0].Genres)
+        </th>
+        <th>
+            @Html.LabelFor(item => Model[0].Konsoler)
+        </th>
+        <th>
+            @Html.LabelFor(item => Model[0].Utgivare)
+        </th>
+        <th>
+            @Html.LabelFor(item => Model[0].Utgivningsår)
+        </th>
+    </tr>
             @foreach(var product in Model)
         {
                 <tr>
@@ -9,6 +29,9 @@
                     <td>
                         @Html.HiddenFor(item=>product.Id)
                         @Html.DisplayFor(item => product.Namn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => product.Pris)
                     </td>
                     <td>
                         @Html.DisplayFor(item => product.Genres)
