@@ -1,4 +1,8 @@
-﻿@model List<SpelAffarWCF.ProduktDto>
+﻿@model SpelAffaren.Models.TheShopModel
+
+@{
+   Layout = null;
+}
 
 @*@using (Html.BeginForm("HämtaProdukterViaGenre", , FormMethod.Post))*@
 
@@ -6,6 +10,7 @@
    <tr>
       <th>Id</th>
       <th>Namn</th>
+      <th>Betyg</th>
       <th>Beskrivning</th>
       <th>Utgivningsår</th>
       <th>MP</th>
@@ -17,19 +22,18 @@
       <th>Aktiv order antal</th>
    </tr>
 
-   @foreach (var spel in Model)
+   @foreach (var spel in Model.ProductsInCategory)
    {
       <tr>
          <td title="Spelets Id">@spel.Id</td>
          <td title="Spelets jävla namn">@spel.Namn</td>
+         <td>@spel.Betyg</td>
          <td title="@spel.Beskrivning">För musen över mig..</td>
          <td title="När det släpptes">@spel.Utgivningsår</td>
          <td title="Multipläjer">@Html.CheckBox("checkboxMP", spel.Multiplayer)</td>
          <td title="Singlpläjer">@Html.CheckBox("checkboxSP", spel.Singleplayer)</td>
-         <td title="Spelet kostar faktiskt såhär mycket">
-            @spel.Pris
-         </td>
-         <td title="Id: @spel.Utgivare.Id, Spel: @spel.Utgivare.Produkter.Count()">@Html.ActionLink(spel.Utgivare.Namn, "EditPublisher", new { id = spel.Utgivare.Id })</td>
+         <td title="Spelet kostar faktiskt såhär mycket">@spel.Pris</td>
+         <td>@Html.ActionLink(spel.Utgivare.Namn, "EditPublisher", new { id = spel.Utgivare.Id })</td>
          @if (spel.Konsoler.Count() > 0)
          {
             <td>
@@ -70,7 +74,7 @@
             <td>Finns inte i någon order.</td>
          }
          <td>
-            <input type="button" value="Lägg till i kundvagn" onclick="AddToCart(@spel.Id)" />
+            <input type="button" class="btn-sm btn-primary" value="Lägg till i kundvagn" onclick="AddToCart(@spel.Id)" />
          </td>
       </tr>
    }

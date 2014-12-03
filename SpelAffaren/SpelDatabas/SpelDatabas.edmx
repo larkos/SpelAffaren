@@ -407,7 +407,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-<<<<<<< HEAD
         <ComplexType Name="GetProductsByGenre">
           <Property Type="Int32" Name="Id" Nullable="false" />
           <Property Type="String" Name="Namn" Nullable="false" />
@@ -415,21 +414,14 @@
           <Property Type="String" Name="Beskrivning" Nullable="false" />
           <Property Type="Int32" Name="Utgivningsår" Nullable="false" />
           <Property Type="Int32" Name="GenreId" Nullable="true" />
-=======
-        <ComplexType Name="GetProductsByGenre_Result">
-          <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="String" Name="Namn" Nullable="false" />
-          <Property Type="Int32" Name="KonsolId" Nullable="false" />
-          <Property Type="String" Name="Beskrivning" Nullable="false" />
-          <Property Type="Int32" Name="Utgivningsår" Nullable="false" />
-          <Property Type="Int32" Name="GenreId" Nullable="false" />
->>>>>>> 326c10b50739eb7a43b3c46cd2f723fb46f6f899
           <Property Type="Int32" Name="UtgivareId" Nullable="false" />
           <Property Type="Double" Name="Betyg" Nullable="false" />
           <Property Type="Double" Name="Pris" Nullable="false" />
           <Property Type="Int32" Name="Beställningar" Nullable="false" />
           <Property Type="Boolean" Name="Multiplayer" Nullable="false" />
           <Property Type="Boolean" Name="Singleplayer" Nullable="false" />
+          <Property Type="String" Name="Utgivare" Nullable="true" />
+          <Property Type="String" Name="Konsol" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -528,7 +520,6 @@
       </EndProperty>
     </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="GetProductsByGenre" FunctionName="SpelDatabas.Store.GetProductsByGenre">
-<<<<<<< HEAD
             <ResultMapping>
               <ComplexTypeMapping TypeName="SpelDatabas.GetProductsByGenre">
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -543,10 +534,10 @@
                 <ScalarProperty Name="Beställningar" ColumnName="Beställningar" />
                 <ScalarProperty Name="Multiplayer" ColumnName="Multiplayer" />
                 <ScalarProperty Name="Singleplayer" ColumnName="Singleplayer" />
+                <ScalarProperty Name="Utgivare" ColumnName="Namn1" />
+                <ScalarProperty Name="Konsol" ColumnName="Namn2" />
               </ComplexTypeMapping>
             </ResultMapping>
-=======
->>>>>>> 326c10b50739eb7a43b3c46cd2f723fb46f6f899
           </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>

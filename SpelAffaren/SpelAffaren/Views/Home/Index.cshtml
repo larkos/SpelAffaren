@@ -1,28 +1,173 @@
-﻿@*@model IEnumerable<SpelAffarWCF.ProduktDto>*@
-@model SpelAffarWCF.SpelAffarService
+﻿@model IEnumerable<SpelAffarWCF.ProduktDto>
 
 @{
    ViewBag.Title = "Index";
-   var pList = Model.GetTopListGames(3);
 }
+<div ng-app="SpelAffar">
+   <div class="row" style="margin:20px 0">
+      <div class="col-sm-6 col-md-4 col-lg-2">
+         <div class="input-group">
+            <input type="text" placeholder="Sök på spel id.." class="form-control" ng-model="search.Id" />
+         </div>
+      </div>
+      <div class="col-sm-6 col-md-4 col-lg-2">
+         <div class="input-group">
+            <input type="text" placeholder="Sök på spel namn.." class="form-control" ng-model="search.Namn" />
+         </div>
+      </div>
+      <div class="col-sm-6 col-md-4 col-lg-2">
+         <div class="input-group">
+            <input type="text" placeholder="Sök på genre.." class="form-control" ng-model="search.Genres.Namn" />
+         </div>
+      </div>
+   </div>
 
-<h2>Index</h2>
-
-<table class="table">
-   <tr>
-      <th>Namn</th>
-      <th></th>
-   </tr>
-
-   @foreach (var item in pList)
-   {
+   <table class="table table-responsive table-striped" ng-controller="ShopCtrl">
       <tr>
-         <td>@item.Namn</td>
-         <td></td>
+         <th style="width: 6%;"><a href="" title="Sortera efter id.." ng-click="reverse=!reverse;order(idAsNumber, reverse)">Id</a></th>
+         <th style="width: 10%;"><a href="" title="Sortera efter namn.." ng-click="reverse=!reverse;order('Namn', reverse)">Namn</a></th>
+         <th style="width: 10%;"><a href="" title="Sortera efter betyg.." ng-click="reverse=!reverse;order('Betyg', reverse)">Betyg</a></th>
+         <th style="width: 10%;">Beskrivning</th>
+         <th style="width: 10%;"><a href="" title="Sortera efter utgivningsår.." ng-click="reverse=!reverse;order('Utgivnings&aring;r', reverse)">Utgivningsår</a></th>
+         <th style="width: 10%;">MP</th>
+         <th style="width: 5%;">SP</th>
+         <th style="width: 5%;">Pris</th>
+         <th style="width: 10%;"><a href="" title="Sortera efter utgivare.." ng-click="reverse=!reverse;order('Utgivare.Namn', reverse)">Utgivare</a></th>
+         <th style="width: 10%;">Konsoler</th>
+         <th style="width: 10%;"><a href="" title="Sortera efter genre.." ng-click="reverse=!reverse;order('Genres', reverse)">Genres</a></th>
+         <th style="width: 10%;">Aktiv order antal</th>
+         <th style="width: 8%;"></th>
+      </tr>
+      <tr ng-repeat="spel in gameproducts | filter:{ Id: search.Id, Namn: search.Namn} ">
+         <td><a style="cursor:default"><span ng-bind-html="spel.Id | highlight:search.Id">{{ spel.Id }}</span></a></td>
+         <td ng-bind-html="spel.Namn | highlight:search.Namn">{{ spel.Namn }}</td>
+         <td>{{ spel.Betyg }}</td>
+         <td title="{{ spel.Beskrivning }}">För musen över mig...</td>
+         <td>År funkar inte än..</td>
+         <!--<td>{{ spel.Utgivningsår }}</td>-->
+         <td><input type="checkbox" class="countboxes" ng-checked="{{ spel.Multiplayer }}" value="{{ spel.Multiplayer }}" ng-model="model" /></td>
+         <td><input type="checkbox" class="countboxes" ng-checked="{{ spel.Singleplayer }}" value="{{ spel.Singleplayer }}" ng-model="model" /></td>
+         <td>{{ spel.Pris }}</td>
+         <td>{{ spel.Utgivare.Namn }}</td>
          <td>
-            @Html.DisplayFor(modelItem => item.Utgivningsår)
+            <ul class="list" style="margin:0 !important;padding:0 !important;">
+               <li class="list-item" ng-repeat="konsol in spel.Konsoler track by $index" style="list-style: none; text-align: left;"><p class="cellEntity">{{ konsol.Namn }}</p></li>
+            </ul>
+         </td>
+         <td>
+            <ul class="list" style="margin:0 !important;padding:0 !important;">
+               <li class="list-item" ng-repeat="genre in spel.Genres track by $index" style="list-style: none; text-align: left;"><p class="cellEntity">{{ genre.Namn }}</p></li>
+            </ul>
+         </td>
+         <td>
+            <ul class="list" style="margin:0 !important;padding:0 !important;">
+               <li class="list-item" ng-repeat="spelOrder in spel.SpelPerOrders track by $index" style="list-style: none; text-align: left;"><p class="cellEntity">Id: {{ spelOrder.OrderId }}, {{ spelOrder.Antal }} st</p></li>
+            </ul>
+         </td>
+         <td>
+            <input type="button" value="Lägg till i kundvagn" onclick="AddToCart(spel.Id)" />
          </td>
       </tr>
+   </table>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+<script type="text/javascript">
+   var app = angular.module('SpelAffar', [])
+      .filter('highlight', function ($sce) {
+         return function (text, phrase) {
+            if (phrase)
+               text = text.replace(new RegExp('(' + phrase + ')', 'gi'),
+                   '<span class="highlightedText">$1</span>');
+            return $sce.trustAsHtml(text);
+         }
+      })
+
+      .controller("ShopCtrl", ['$filter', '$scope', '$sce', function ($filter, $scope) {
+         $scope.gameproducts = set(@Html.Raw(Json.Encode(Model)));
+
+         var orderBy = $filter('orderBy');
+         $scope.order = function (predicate, reverse) {
+            $scope.gameproducts = orderBy($scope.gameproducts, predicate, reverse);
+         };
+
+         $scope.order('Namn', true);
+
+         $scope.idAsNumber = function (item) {
+            return +item.id;
+         }
+
+      }]);
+
+   function set(value) {
+      return value;
+   };
+
+   function removefromcart(item) {
+      //alert(item)
+      var data = document.getElementById(item);
+      //alert(data.value)
+      $.ajax({
+         url: "/Home/RemoveProdukt",
+         type: "POST",
+         data: { id: data.value },
+         success: function (result) {
+            alert(result);
+            $('#CartPlacer').html(result);
+         }
+      })
+
    }
 
-</table>
+   function AddToCart(item) {
+      //alert(item)
+      //var data = document.getElementById(item);
+      //alert(data.value)
+      $.ajax({
+         url: "/Home/AddProdukt",
+         type: "POST",
+         data: { sp: item },
+         success: function (result) {
+            alert(result);
+            $('#CartPlacer').html(result);
+         }
+      })
+
+   }
+
+   function UpdateList() {
+      var antalitem = document.getElementsByClassName("itemantal");
+      var produktid = document.getElementsByClassName("updatefunc");
+
+      var produkt = [];
+
+      var json = "";
+      //alert(antalitem + " " + produktid);
+      for (i = 0; i < produktid.length; i++) {
+         var item = {
+            "antal": antalitem[i].value,
+            "id": produktid[i].value
+         }
+         produkt.push(item)
+      };
+      //alert(antalitem + " " + produktid);
+      //for (i = 0; i < produkt.length; i++) {
+      //    alert(produkt[i].id + " " + produkt[i].antal);
+      //};
+      produkt = JSON.stringify({ 'produkt': produkt });
+
+      $.ajax({
+         contentType: 'application/json; charset=utf-8',
+         dataType: 'json',
+         type: 'POST',
+         url: '/Home/UpdateCart',
+         data: produkt,
+         success: function (result) {
+            $('#CartPlacer').html(result);
+         },
+         //failure: function (response) {
+         //    $('#result').html(response);
+         //}
+      });
+   }
+</script>

@@ -16,13 +16,10 @@ namespace SpelAffaren.Controllers
             KundvagnsRepo._repo.Kundvagnar.Add(new Kundvagn(Response,Request));
 
             SpelAffarWCF.SpelAffarService proxy = new SpelAffarService();
-            
 
-            //Funktion för hämta det populäraste produkterna//
-            List<spelprodukt> Populärast = new List<spelprodukt>();
-            Populärast.Add(new spelprodukt() { antal = 2, Beskriving = "a false accusation", Namn = "The False accusation", UtgivningsAr = 1988, pris = 249, Spelkostnad = 249 * 2, GenreId = 1, KonsolId = 2, Id = 13 });
- 
-          return View(Populärast);
+            var list = proxy.HämtaProdukter().OrderBy(f => f.Beställningar);
+
+          return View(list);
         }
 
         public ActionResult TheShop()
@@ -45,16 +42,14 @@ namespace SpelAffaren.Controllers
             SpelAffarService service = new SpelAffarService();
             // skicka med en lista med produkter till vyn istället för service som här nedan
 
-            //List<ProduktDto> response = service.HämtaProdukter();
-            //ViewBag.message = " this repo was created" + myrepo.ToString()+" and your cookie is "+mycookie+" there is a shopping cart with number "+MinKV.Owner+" that contains "+MinKV.Products.Count()+" Items and was created "+MinKV.Skapad;
-            return View(new TheShopModel { Cart = MinKV, Service = service });
-
-            SpelAffarService service = new SpelAffarService();
-			// Lägg in här att hämta ifrån servicen GetProductsFromGenre
+            // Lägg in här att hämta ifrån servicen GetProductsFromGenre
             List<ProduktDto> response = service.HämtaProdukter();
-
+            TheShopModel model = new TheShopModel();
+            model.Cart = MinKV;
+            model.ProductsInCategory = response;
+            model.AvaliableGenre = service.GetAllGenre();
             //ViewBag.message = " this repo was created" + myrepo.ToString()+" and your cookie is "+mycookie+" there is a shopping cart with number "+MinKV.Owner+" that contains "+MinKV.Products.Count()+" Items and was created "+MinKV.Skapad;
-            return View(new TheShopModel { Cart = MinKV,ProductsInCategory=response,AvaliableGenre=service.GetAllGenre()});
+            return View(model);
         }
 
         public PartialViewResult ShoppingCart()
@@ -137,10 +132,10 @@ namespace SpelAffaren.Controllers
         public PartialViewResult GetByGenre(int Genre)
         {
             //Den här kodbiten kan komma att ändras beroende på hur de ser ut//
-            List<ProduktDto> ProdByGenre = new List<ProduktDto>();
+            var ProdByGenre = new List<ProduktDto>();
 
             SpelAffarService SAS = new SpelAffarService();
-            ProdByGenre=SAS.HämtaFrånGenre(Genre);
+            ProdByGenre=SAS.HämtaProduktViaGenre(Genre);
             
             return PartialView("Products", ProdByGenre);
         }

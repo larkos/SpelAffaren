@@ -25,5 +25,7 @@ namespace SpelDatabas
         public int Beställningar { get; set; }
         public bool Multiplayer { get; set; }
         public bool Singleplayer { get; set; }
+        public string Utgivare { get; set; }
+        public string Konsol { get; set; }
     }
 }

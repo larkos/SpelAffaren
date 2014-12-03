@@ -27,5 +27,8 @@ namespace SpelAffarWCF
 
         [OperationContract]
         OrderDto NyOrder(int kundId, int[] produkter, string kommentar);
+
+        [OperationContract]
+        List<GenreDto> GetAllGenre();
     }
 }

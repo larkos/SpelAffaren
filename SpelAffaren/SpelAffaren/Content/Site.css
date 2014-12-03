@@ -9,6 +9,14 @@
     padding-right: 15px;
 }
 
+.table p, td{
+   font-size: 11px;
+}
+
+.highlightedText {
+        background: yellow;
+    }
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */

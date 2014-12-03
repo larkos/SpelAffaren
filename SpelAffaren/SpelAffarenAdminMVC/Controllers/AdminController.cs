@@ -306,8 +306,7 @@ namespace SpelAffarenAdminMVC.Controllers
                     Beskrivning = beskrivning,
                     UtgivareId = utgId,
                     Multiplayer = multiplayer,
-                    Singleplayer = singleplayer,
-                    Pris=double.Parse(pris)
+                    Singleplayer = singleplayer
                 };
                 var intKonsoler = konsoler.Select(int.Parse).ToArray();
                 var intGenres = genres.Select(int.Parse).ToArray();

@@ -50,49 +50,6 @@ namespace SpelAffarWCF
                 returnList.Add(prodDto);
 
                 return returnList;
-                //var prod = (from m in db.ProduktSet
-                //            select m).ToList();
-                // var products = (from s in db.GetProductsByGenre(Convert.ToInt32(genreId))
-
-                //                let konsoler = s.Konsol.Select(konsol => new KonsolDto
-                //                 {
-                //                     Id = konsol.Id,
-                //                     Namn = konsol.Namn
-                //                 }).ToList()
-                //         let genres = s.Genre.Select(genre => new GenreDto
-                //         {
-                //             Id = genre.Id,
-                //             Namn = genre.Namn
-                //         }).ToList()
-                //         let spelPerOrders = s.SpelPerOrder.Select(spo => new SpelPerOrderDto
-                //         {
-                //             SpelId = spo.SpelId,
-                //             OrderId = spo.OrderId,
-                //             Antal = spo.Antal
-                //         }).ToList() 
-                //         select new ProduktDto
-                //         {
-                //             Id = s.Id,
-                //             Beskrivning = s.Beskrivning,
-                //             Namn = s.Namn,
-                //             Pris = s.Pris,
-                //             Beställningar = s.Beställningar,
-                //             Konsoler = konsoler,
-                //             Betyg = s.Betyg,
-                //             Genres = genres,
-                //             SpelPerOrders = spelPerOrders,
-                //             Singleplayer = s.Singleplayer,
-                //             Multiplayer = s.Multiplayer,
-                //             Utgivningsår = s.Utgivningsår,
-                //             Utgivare = (from u in db.UtgivareSet
-                //                         where u.Id == s.UtgivareId
-                //                         select new UtgivareDto
-                //                         {
-                //                             Id = u.Id,
-                //                             Namn = u.Namn
-                //                         }).FirstOrDefault()
-                //         }).Distinct().ToList();
-                // return products;
             }
         }
 
@@ -355,26 +312,6 @@ namespace SpelAffarWCF
                 }
                 return new OrderDto();
             }
-        }
-
-        public List<ProduktDto> HämtaFrånGenre(int GenreId)
-        {
-            List<ProduktDto> returera = new List<ProduktDto>();
-
-            List<Produkt> products = new List<Produkt>();
-            using (var db=new SpelDatabasContainer())
-            {
-
-               products=db.GetProductsByGenre(GenreId).ToList();
-            }
-
-            //Detta ska ändras i mapping
-            foreach (Produkt g in products)
-            {
-                returera.Add(new ProduktDto() { Id = g.Id, Namn = g.Namn ,Pris=g.Pris,Beskrivning=g.Beskrivning});
-            }
-            
-            return returera;
         }
 
         public List<GenreDto> GetAllGenre()
