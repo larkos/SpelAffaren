@@ -1,71 +1,28 @@
-﻿@model List<SpelAffaren.Models.spelprodukt>
+﻿@*@model IEnumerable<SpelAffarWCF.ProduktDto>*@
+@model SpelAffarWCF.SpelAffarService
+
 @{
-    ViewBag.Title = "Home Page";
+   ViewBag.Title = "Index";
+   var pList = Model.GetTopListGames(3);
 }
 
-<div class="jumbotron">
-    <h1>Välkommen till spel affären!</h1>
-    <p class="lead">Här har du våra mest skönaste och populäraste produkter:)</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Vill du veta mera? &raquo;</a></p>
-</div>
+<h2>Index</h2>
 
-<div>
-    <table>
-        <thead>
-            Snyggast och Bäst Just Nu!
-        </thead>
-        <tr>
-            <th>
-                Spel
-            </th>
-            <th>
-                Pris
-            </th>
-            <th>
-                Konsol
-            </th>
-            <th>
-                Utgivningsår
-            </th>
-        </tr>
-        
-        @foreach(var prod in Model)
-        {
-            <tr>
-                <td>
-@prod.Namn
-                </td>
-                <td>
-                    @prod.pris
-                </td>
-                <td>
-                    @prod.KonsolId
-                </td>
-                <td>
-                    @prod.UtgivningsAr
-                </td>
-            </tr>
-        }
-    </table>
-</div>
-@*<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>*@
+<table class="table">
+   <tr>
+      <th>Namn</th>
+      <th></th>
+   </tr>
+
+   @foreach (var item in pList)
+   {
+      <tr>
+         <td>@item.Namn</td>
+         <td></td>
+         <td>
+            @Html.DisplayFor(modelItem => item.Utgivningsår)
+         </td>
+      </tr>
+   }
+
+</table>

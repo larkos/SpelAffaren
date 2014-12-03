@@ -11,6 +11,9 @@ namespace SpelAffarWCF
     public interface ISpelAffarService
     {
         [OperationContract]
+        List<ProduktDto> HämtaProduktViaGenre(int genreId);
+
+        [OperationContract]
         List<ProduktDto> HämtaProdukter();
 
         [OperationContract]

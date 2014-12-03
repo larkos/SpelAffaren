@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using SpelDatabas;
 
 namespace SpelAffarWCF
 {
@@ -59,6 +60,34 @@ namespace SpelAffarWCF
 
     public class ProduktDto
     {
+        public ProduktDto()
+        {
+
+        }
+        public ProduktDto(GetProductsByGenre data)
+        {
+            var db = new SpelDatabasContainer();
+            Id = data.Id;
+            Namn = data.Namn;
+            Beskrivning = data.Beskrivning;
+            Utgivningsår = data.Utgivningsår;
+            Konsoler = new List<KonsolDto>();
+            Genres = new List<GenreDto>();
+            SpelPerOrders = new List<SpelPerOrderDto>();
+            Utgivare = (from u in db.UtgivareSet
+                        where u.Id == data.UtgivareId
+                        select new UtgivareDto
+                        {
+                            Id = u.Id,
+                            Namn = u.Namn
+                        }).First();
+            Beställningar = data.Beställningar;
+            Betyg = data.Betyg;
+            Pris = data.Pris;
+            Multiplayer = data.Multiplayer;
+            Singleplayer = data.Singleplayer;
+        }
+
         [Display(Name = "Id")]
         public int Id { get; set; }
         [Display(Name = "Namn")]

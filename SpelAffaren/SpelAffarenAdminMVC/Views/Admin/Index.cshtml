@@ -150,7 +150,7 @@
    @if (db.ProduktSet.Count() > 0)
    {
       <h3>Spel</h3>
-      <table class="table">
+      <table class="table table-striped">
          <tr>
             <th>Id</th>
             <th>Namn</th>
@@ -206,7 +206,7 @@
                   <td>
                      @foreach (var spelOrder in spel.SpelPerOrder)
                      {
-                        <p class="cellEntity">Id: @spelOrder.OrderId, @spelOrder.Antal st</p>
+                        <p class="cellEntity">Id: @spelOrder.OrderId, @spelOrder.Antal st.</p>
                      }
                   </td>
                }

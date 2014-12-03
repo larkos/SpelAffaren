@@ -53,6 +53,10 @@ namespace SpelAffarenAdminMVC.Controllers
                 db.KonsolSet.Add(new Konsol { Namn = "PSP" });
                 db.KonsolSet.Add(new Konsol { Namn = "Xbox 360" });
                 db.KonsolSet.Add(new Konsol { Namn = "Xbox One" });
+                db.KonsolSet.Add(new Konsol { Namn = "Wii" });
+                db.KonsolSet.Add(new Konsol { Namn = "Wii U" });
+                db.KonsolSet.Add(new Konsol { Namn = "GameCube" });
+                db.KonsolSet.Add(new Konsol { Namn = "Playstation 2" });
                 db.SaveChanges();
 
                 db.UtgivareSet.Add(new Utgivare { Namn = "EA Games" });
@@ -73,11 +77,8 @@ namespace SpelAffarenAdminMVC.Controllers
 
         public ActionResult Index()
         {
-
             return View();
         }
-
-        // att implementeras
 
         [HttpPost]
         public ActionResult CreatePublisher(string name)
@@ -298,6 +299,7 @@ namespace SpelAffarenAdminMVC.Controllers
                 // tänk på vad som är null här och inte 
                 var spel = new Produkt
                 {
+                    Pris = double.Parse(pris),
                     Utgivare = utg,
                     Namn = name,
                     Utgivningsår = int.Parse(utgivningsår),

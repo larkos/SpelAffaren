@@ -7,9 +7,7 @@ namespace SpelAffaren.Models
 {
     public class TheShopModel
     {
-
-        public Kundvagn Cart{ get; set; }
-        public List<ProduktDto> ProductsInCategory {get;set;}
-        
+        public Kundvagn Cart { get; set; }
+        public SpelAffarWCF.SpelAffarService Service { get; set; }
     }
 }

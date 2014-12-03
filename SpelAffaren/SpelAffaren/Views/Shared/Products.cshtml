@@ -1,35 +1,77 @@
 ﻿@model List<SpelAffarWCF.ProduktDto>
 
-<table>
-    
-            @foreach(var product in Model)
-        {
-                <tr>
+@*@using (Html.BeginForm("HämtaProdukterViaGenre", , FormMethod.Post))*@
 
-                    <td>
-                        @Html.HiddenFor(item=>product.Id)
-                        @Html.DisplayFor(item => product.Namn)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(item => product.Genres)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(item => product.Konsoler)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(item => product.Utgivare)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(item => product.Utgivningsår)
-                    </td>
-                    <td>
-                        <input type="button" value="Add to cart" onclick="AddToCart(@product.Id)" />
-                    </td>
-                </tr>
-                    }
+<table class="table table-responsive">
+   <tr>
+      <th>Id</th>
+      <th>Namn</th>
+      <th>Beskrivning</th>
+      <th>Utgivningsår</th>
+      <th>MP</th>
+      <th>SP</th>
+      <th>Pris</th>
+      <th>Utgivare</th>
+      <th>Konsoler</th>
+      <th>Genres</th>
+      <th>Aktiv order antal</th>
+   </tr>
 
-
-
-
-
+   @foreach (var spel in Model)
+   {
+      <tr>
+         <td title="Spelets Id">@spel.Id</td>
+         <td title="Spelets jävla namn">@spel.Namn</td>
+         <td title="@spel.Beskrivning">För musen över mig..</td>
+         <td title="När det släpptes">@spel.Utgivningsår</td>
+         <td title="Multipläjer">@Html.CheckBox("checkboxMP", spel.Multiplayer)</td>
+         <td title="Singlpläjer">@Html.CheckBox("checkboxSP", spel.Singleplayer)</td>
+         <td title="Spelet kostar faktiskt såhär mycket">
+            @spel.Pris
+         </td>
+         <td title="Id: @spel.Utgivare.Id, Spel: @spel.Utgivare.Produkter.Count()">@Html.ActionLink(spel.Utgivare.Namn, "EditPublisher", new { id = spel.Utgivare.Id })</td>
+         @if (spel.Konsoler.Count() > 0)
+         {
+            <td>
+               @foreach (var konsol in spel.Konsoler)
+               {
+                  <p class="cellEntity">@konsol.Namn</p>
+               }
+            </td>
+         }
+         else
+         {
+            <td>Ingen.</td>
+         }
+         @if (spel.Genres.Count() > 0)
+         {
+            <td>
+               @foreach (var genres in spel.Genres)
+               {
+                  <p class="cellEntity">@genres.Namn</p>
+               }
+            </td>
+         }
+         else
+         {
+            <td>Ingen genre.</td>
+         }
+         @if (spel.SpelPerOrders.Count() > 0)
+         {
+            <td>
+               @foreach (var spelOrder in spel.SpelPerOrders)
+               {
+                  <p class="cellEntity">Id: @spelOrder.OrderId, @spelOrder.Antal st</p>
+               }
+            </td>
+         }
+         else
+         {
+            <td>Finns inte i någon order.</td>
+         }
+         <td>
+            <input type="button" value="Lägg till i kundvagn" onclick="AddToCart(@spel.Id)" />
+         </td>
+      </tr>
+   }
 </table>

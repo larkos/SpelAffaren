@@ -168,16 +168,52 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\GenreSet.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\KonsolSet.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\KundvagnsRepo.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\OrderSet.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PersonerSet.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProduktSet.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpelDatabas.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpelDatabas.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpelDatabas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SpelDatabas.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SpelDatabas.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\SpelPerOrderSet.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TheShopModel.cs" />
+    <Compile Include="Models\UtgivareSet.cs">
+      <DependentUpon>SpelDatabas.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\SpelAffarService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +232,16 @@
     <Content Include="Models\SpelDatabas.edmx.diagram">
       <DependentUpon>SpelDatabas.edmx</DependentUpon>
     </Content>
+    <Content Include="Models\SpelDatabas.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SpelDatabas.Context.cs</LastGenOutput>
+      <DependentUpon>SpelDatabas.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\SpelDatabas.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SpelDatabas.cs</LastGenOutput>
+      <DependentUpon>SpelDatabas.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -208,7 +254,16 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <None Include="Service References\SpelAffarService\configuration91.svcinfo" />
+    <None Include="Service References\SpelAffarService\configuration.svcinfo" />
+    <None Include="Service References\SpelAffarService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -221,7 +276,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\blah.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -247,6 +301,20 @@
     <Content Include="Views\Shared\MyTestShop.cshtml" />
     <Content Include="Views\Home\TheShop.cshtml" />
     <Content Include="Views\Shared\Products.cshtml" />
+    <None Include="Service References\SpelAffarService\Arrays.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SpelAffarService\service.wsdl" />
+    <None Include="Service References\SpelAffarService\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SpelAffarService\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\SpelAffarService\SpelAffarWCF.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -263,6 +331,15 @@
       <Project>{096d207f-9f81-42c6-9e59-6e6f7e258311}</Project>
       <Name>SpelAffarWCF</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\SpelAffarService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

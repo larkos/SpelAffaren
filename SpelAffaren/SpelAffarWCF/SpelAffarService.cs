@@ -12,6 +12,90 @@ namespace SpelAffarWCF
     [DataContract]
     public class SpelAffarService : ISpelAffarService
     {
+        public List<ProduktDto> HämtaProduktViaGenre(int genreId)
+        {
+            using (var db = new SpelDatabasContainer())
+            {
+                var prod = db.GetProductsByGenre(genreId).ToList();
+                var prodDto = new ProduktDto(prod.First());
+                //var prodId = prod.FirstOrDefault().Id;
+                var prodId = prodDto.Id;
+                var genreList = new List<int>();
+                var consoleList = new List<int>();
+                var returnList = new List<ProduktDto>();
+                foreach (var spel in prod)
+                {
+                    if (prodId != spel.Id)
+                    {
+                        returnList.Add(prodDto);
+                        prodId = spel.Id;
+                        prodDto = new ProduktDto(spel);
+                        genreList = new List<int>();
+                        consoleList = new List<int>();
+                    }
+                    if (!genreList.Contains((int)spel.GenreId))
+                    {
+                        var genre = db.GenreSet.Where(f => f.Id == spel.GenreId).Select(f => new GenreDto { Id = f.Id, Namn = f.Namn }).First();
+                        prodDto.Genres.Add(genre);
+                        genreList.Add((int)spel.GenreId);
+                    }
+                    if (!consoleList.Contains((int)spel.KonsolId))
+                    {
+                        var console = db.KonsolSet.Where(f => f.Id == spel.KonsolId).Select(f => new KonsolDto { Id = f.Id, Namn = f.Namn }).First();
+                        prodDto.Konsoler.Add(console);
+                        consoleList.Add((int)spel.KonsolId);
+                    }
+                }
+
+                returnList.Add(prodDto);
+
+                return returnList;
+                //var prod = (from m in db.ProduktSet
+                //            select m).ToList();
+                // var products = (from s in db.GetProductsByGenre(Convert.ToInt32(genreId))
+
+                //                let konsoler = s.Konsol.Select(konsol => new KonsolDto
+                //                 {
+                //                     Id = konsol.Id,
+                //                     Namn = konsol.Namn
+                //                 }).ToList()
+                //         let genres = s.Genre.Select(genre => new GenreDto
+                //         {
+                //             Id = genre.Id,
+                //             Namn = genre.Namn
+                //         }).ToList()
+                //         let spelPerOrders = s.SpelPerOrder.Select(spo => new SpelPerOrderDto
+                //         {
+                //             SpelId = spo.SpelId,
+                //             OrderId = spo.OrderId,
+                //             Antal = spo.Antal
+                //         }).ToList() 
+                //         select new ProduktDto
+                //         {
+                //             Id = s.Id,
+                //             Beskrivning = s.Beskrivning,
+                //             Namn = s.Namn,
+                //             Pris = s.Pris,
+                //             Beställningar = s.Beställningar,
+                //             Konsoler = konsoler,
+                //             Betyg = s.Betyg,
+                //             Genres = genres,
+                //             SpelPerOrders = spelPerOrders,
+                //             Singleplayer = s.Singleplayer,
+                //             Multiplayer = s.Multiplayer,
+                //             Utgivningsår = s.Utgivningsår,
+                //             Utgivare = (from u in db.UtgivareSet
+                //                         where u.Id == s.UtgivareId
+                //                         select new UtgivareDto
+                //                         {
+                //                             Id = u.Id,
+                //                             Namn = u.Namn
+                //                         }).FirstOrDefault()
+                //         }).Distinct().ToList();
+                // return products;
+            }
+        }
+
         public List<ProduktDto> HämtaProdukter()
         {
             using (var db = new SpelDatabasContainer())
@@ -203,7 +287,7 @@ namespace SpelAffarWCF
                     };
                     db.OrderSet.Add(order);
                     db.Entry(order).State = EntityState.Added;
-                    
+
                     db.SaveChanges();
                     var orderDto = new OrderDto
                     {
@@ -214,8 +298,8 @@ namespace SpelAffarWCF
                         SpelPerOrders = new List<SpelPerOrderDto>()
                     };
                     foreach (var produkt in produkter.Select(pId => (from p in db.ProduktSet
-                                                                         where pId == p.Id
-                                                                         select p).FirstOrDefault()).Where(prod => prod != null))
+                                                                     where pId == p.Id
+                                                                     select p).FirstOrDefault()).Where(prod => prod != null))
                     {
                         var spelPerOrder = new SpelPerOrder { OrderId = order.Id };
                         var spelPerOrderDto = new SpelPerOrderDto { OrderId = order.Id };
@@ -230,7 +314,7 @@ namespace SpelAffarWCF
 
                         spelPerOrder.Produkt = produkt;
                         spelPerOrder.Produkt.Beställningar++; // ska väl också matcha hur många av samma element som fanns i int[] med spel?
-                                                spelPerOrder.Order = order;
+                        spelPerOrder.Order = order;
                         spelPerOrder.Antal++;
                         spelPerOrder.SpelId = produkt.Id;
                         order.SpelPerOrder.Add(spelPerOrder);

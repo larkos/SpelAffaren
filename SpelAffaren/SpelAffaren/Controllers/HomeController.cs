@@ -14,10 +14,13 @@ namespace SpelAffaren.Controllers
            KundvagnsRepo.initRepo();
             KundvagnsRepo._repo.Kundvagnar.Add(new Kundvagn(Response,Request));
 
+            SpelAffarWCF.SpelAffarService proxy = new SpelAffarService();
+            
+
             //Funktion för hämta det populäraste produkterna//
             List<spelprodukt> Populärast = new List<spelprodukt>();
             Populärast.Add(new spelprodukt() { antal = 2, Beskriving = "a false accusation", Namn = "The False accusation", UtgivningsAr = 1988, pris = 249, Spelkostnad = 249 * 2, GenreId = 1, KonsolId = 2, Id = 13 });
-            return View(Populärast);
+            return View(proxy);
         }
 
         public ActionResult TheShop()
@@ -37,11 +40,13 @@ namespace SpelAffaren.Controllers
             
             MinKV.CartCostCount();
 
-            Service1 service = new Service1();
 
-            List<ProduktDto> response = service.GetAllProducts();
+            SpelAffarService service = new SpelAffarService();
+            // skicka med en lista med produkter till vyn istället för service som här nedan
+
+            //List<ProduktDto> response = service.HämtaProdukter();
             //ViewBag.message = " this repo was created" + myrepo.ToString()+" and your cookie is "+mycookie+" there is a shopping cart with number "+MinKV.Owner+" that contains "+MinKV.Products.Count()+" Items and was created "+MinKV.Skapad;
-            return View(new TheShopModel { Cart = MinKV,ProductsInCategory=response});
+            return View(new TheShopModel { Cart = MinKV, Service = service });
         }
 
         public PartialViewResult ShoppingCart()
@@ -74,8 +79,8 @@ namespace SpelAffaren.Controllers
             Kundvagn KV = (from k in KundvagnsRepo._repo.Kundvagnar where k.Owner == int.Parse(Request.Cookies["Klient"].Value) select k).FirstOrDefault();
 
             //ProduktDto exist = (from list in KV.Products where list.Id == sp select list).FirstOrDefault();
-            Service1 connect = new Service1();
-            ProduktDto exist = connect.GetProduct(sp);
+            SpelAffarService connect = new SpelAffarService();
+            ProduktDto exist = connect.HämtaProdukt(sp);
             //if(exist != null)
             //{
             //    exist.antal += sp.antal;
