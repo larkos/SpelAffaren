@@ -24,18 +24,18 @@
 
    <table class="table table-responsive table-striped" ng-controller="ShopCtrl">
       <tr>
-         <th style="width: 6%;"><a href="" title="Sortera efter id.." ng-click="reverse=!reverse;order(idAsNumber, reverse)">Id</a></th>
-         <th style="width: 10%;"><a href="" title="Sortera efter namn.." ng-click="reverse=!reverse;order('Namn', reverse)">Namn</a></th>
-         <th style="width: 10%;"><a href="" title="Sortera efter betyg.." ng-click="reverse=!reverse;order('Betyg', reverse)">Betyg</a></th>
+         <th style="width: 3%;"><a href="" title="Sortera efter id.." ng-click="reverse=!reverse;order(idAsNumber, reverse)">Id</a></th>
+         <th style="width: 14%;"><a href="" title="Sortera efter namn.." ng-click="reverse=!reverse;order('Namn', reverse)">Namn</a></th>
+         <th style="width: 5%;"><a href="" title="Sortera efter betyg.." ng-click="reverse=!reverse;order('Betyg', reverse)">Betyg</a></th>
          <th style="width: 10%;">Beskrivning</th>
-         <th style="width: 10%;"><a href="" title="Sortera efter utgivningsår.." ng-click="reverse=!reverse;order('Utgivnings&aring;r', reverse)">Utgivningsår</a></th>
-         <th style="width: 10%;">MP</th>
-         <th style="width: 5%;">SP</th>
-         <th style="width: 5%;">Pris</th>
-         <th style="width: 10%;"><a href="" title="Sortera efter utgivare.." ng-click="reverse=!reverse;order('Utgivare.Namn', reverse)">Utgivare</a></th>
-         <th style="width: 10%;">Konsoler</th>
-         <th style="width: 10%;"><a href="" title="Sortera efter genre.." ng-click="reverse=!reverse;order('Genres', reverse)">Genres</a></th>
-         <th style="width: 10%;">Aktiv order antal</th>
+         <th style="width: 7%;"><a href="" title="Sortera efter utgivningsår.." ng-click="reverse=!reverse;order('Utgivnings&aring;r', reverse)">Utgivningsår</a></th>
+         <th style="width: 3%;">MP</th>
+         <th style="width: 3%;">SP</th>
+         <th style="width: 7%;">Pris</th>
+         <th style="width: 12%;"><a href="" title="Sortera efter utgivare.." ng-click="reverse=!reverse;order('Utgivare.Namn', reverse)">Utgivare</a></th>
+         <th style="width: 9%;">Konsoler</th>
+         <th style="width: 8%;"><a href="" title="Sortera efter genre.." ng-click="reverse=!reverse;order('Genres', reverse)">Genres</a></th>
+         <th style="width: 9%;">Aktiv order antal</th>
          <th style="width: 8%;"></th>
       </tr>
       <tr ng-repeat="spel in gameproducts | filter:{ Id: search.Id, Namn: search.Namn} ">
@@ -47,7 +47,7 @@
          <!--<td>{{ spel.Utgivningsår }}</td>-->
          <td><input type="checkbox" class="countboxes" ng-checked="{{ spel.Multiplayer }}" value="{{ spel.Multiplayer }}" ng-model="model" /></td>
          <td><input type="checkbox" class="countboxes" ng-checked="{{ spel.Singleplayer }}" value="{{ spel.Singleplayer }}" ng-model="model" /></td>
-         <td>{{ spel.Pris }}</td>
+         <td>{{ spel.Pris }}:-</td>
          <td>{{ spel.Utgivare.Namn }}</td>
          <td>
             <ul class="list" style="margin:0 !important;padding:0 !important;">
