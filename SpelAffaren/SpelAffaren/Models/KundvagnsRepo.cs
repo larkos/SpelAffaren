@@ -51,12 +51,13 @@ namespace SpelAffaren.Models
         public ProduktDto heading = new ProduktDto();
         public DateTime Skapad { get; set; }
         public double Totalt { get; set; }
-
+        public string OrderComment { get; set; }
 
         public void cleanout_KundVagn()
         {
             List<ProduktDto> Ny = new List<ProduktDto>();
             Products = Ny;
+            OrderComment = "";
             
         }
 
@@ -81,7 +82,7 @@ namespace SpelAffaren.Models
                 Owner = int.Parse(KartOwner.Value);
                 Products = new List<ProduktDto>();
                 Skapad = DateTime.Now;
-
+                OrderComment = "Ingen kommentar..";
                 KundvagnsRepo._repo.Kundvagnar.Add(new Kundvagn { Owner = Owner, Products = Products, Skapad = Skapad });
             }
             
@@ -126,10 +127,13 @@ namespace SpelAffaren.Models
 
         public void CartCostCount()
         {
+            double kostnad=0;
             foreach(ProduktDto sp in this.Products)
             {
-                //this.Totalt += sp.prs;
+                kostnad += sp.Pris;
             }
+
+            this.Totalt = kostnad;
         }
     }
 

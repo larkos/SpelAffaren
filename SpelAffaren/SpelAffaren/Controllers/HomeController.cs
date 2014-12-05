@@ -22,6 +22,7 @@ namespace SpelAffaren.Controllers
           return View(list);
         }
 
+        
         public ActionResult TheShop()
         {
             KundvagnsRepo.initRepo();
@@ -52,8 +53,11 @@ namespace SpelAffaren.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public PartialViewResult ShoppingCart()
         {
+            string mycookie = Request.Cookies["Klient"].Value;
+            Kundvagn MinKV = (from k in KundvagnsRepo._repo.Kundvagnar where k.Owner == int.Parse(mycookie) select k).FirstOrDefault();
             //DateTime myrepo = KundvagnsRepo._repo.RepoCreated;
 
             //string mycookie = Request.Cookies["Klient"].Value;
@@ -66,16 +70,38 @@ namespace SpelAffaren.Controllers
             //}
 
             //MinKV.CartCostCount();
-            return PartialView("ShoppingCart");
+            return PartialView("ShoppingCart",MinKV);
         }
 
-        public ActionResult Contact()
+        public ActionResult OrderHistorik()
         {
-            ViewBag.Message = "Your contact page.";
+            SpelAffarService SAS = new SpelAffarService();
 
-            return View("MyTestShop");
+            List<OrderDto> retur = new List<OrderDto>();
+            if ((PersonDto)Session["User"] != null)
+            {
+                PersonDto pd = (PersonDto)Session["User"];
+                retur = SAS.OrderHistorik(pd);
+                ViewBag.Message = "Hej " + pd.Förnamn + " Här visar vi din order historik här hos oss! Här nedanför kan du tittat när du har beställt";
+
+
+            }
+            else
+            {
+                ViewBag.Message = "Din orderhistorik kan inte hämtas för du är ej inloggad";
+            }
+            return View(retur);
         }
 
+        [HttpPost]
+        public PartialViewResult CommentKV(string OrderComment)
+        {
+            Kundvagn KV = (from k in KundvagnsRepo._repo.Kundvagnar where k.Owner == int.Parse(Request.Cookies["Klient"].Value) select k).FirstOrDefault();
+
+            KV.OrderComment = OrderComment;
+
+            return PartialView("ShoppingCart",KV);
+        }
         [HttpPost]
         public PartialViewResult AddProdukt(int sp)
         {
@@ -93,7 +119,7 @@ namespace SpelAffaren.Controllers
             //{
                 KV.Products.Add(exist);
             //}
-
+                KV.CartCostCount();
             return PartialView("ShoppingCart",KV);
         }
 
@@ -105,6 +131,7 @@ namespace SpelAffaren.Controllers
             ProduktDto exist = (from list in KV.Products where list.Id == int.Parse(id) select list).FirstOrDefault();
             KV.Products.Remove(exist);
 
+            KV.CartCostCount();
             return PartialView("ShoppingCart", KV);
         }
 
@@ -123,8 +150,8 @@ namespace SpelAffaren.Controllers
                 
                 //tochange.Spelkostnad = produkt[i].antal * tochange.pris;
             }
-           
-            
+
+            change.CartCostCount();
             return PartialView("ShoppingCart",change);
         }
 
@@ -140,24 +167,31 @@ namespace SpelAffaren.Controllers
             return PartialView("Products", ProdByGenre);
         }
 
-        [HttpPost]
-        public ActionResult Pay()
+        
+        public PartialViewResult Pay()
         {
             OrderDto retur = new OrderDto();
             Kundvagn MinKV = (from k in KundvagnsRepo._repo.Kundvagnar where k.Owner == int.Parse(Request.Cookies["Klient"].Value) select k).FirstOrDefault();
 
             SpelAffarService SAS = new SpelAffarService();
             int[] Produkter = (from kv in MinKV.Products select kv.Id).ToArray();
-            string OrderComment = "";
+            if (MinKV.OrderComment == null)
+                MinKV.OrderComment = "";
             PersonDto p = (PersonDto)Session["User"];
             if (p != null)
             {
-                retur = SAS.NyOrder(p.Id, Produkter, OrderComment);
+                retur = SAS.NyOrder(p.Id, Produkter, MinKV.OrderComment);
                 MinKV.cleanout_KundVagn();
+
+                ViewBag.Message = "Du har betalat. Tack och välkommen åter!";
+            }
+            else
+            {
+                ViewBag.Message = "Du är inte inloggad. Vänligen logga in dig innan du försöker handla!";
             }
 
             //SAS.Pay();
-            return RedirectToAction("Payment",retur);
+            return PartialView("Payment",retur);
         }
        
         public ActionResult Payment(OrderDto od)

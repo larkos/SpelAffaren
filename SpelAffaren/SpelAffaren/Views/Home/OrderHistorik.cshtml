@@ -1,0 +1,35 @@
+﻿@model List<SpelAffarWCF.OrderDto>
+<head>
+    <link href="~/Scripts/ccs/simplestyle.css" rel="stylesheet" type="text/css" />
+</head>
+
+<label style="width:500px">@ViewBag.Message</label>
+<table class="CSSTableGenerator">
+    
+    <tr>
+        <th>
+            @Html.LabelFor(model=>model[0].Id)
+        </th>
+        <th>
+            @Html.LabelFor(model => model[0].Datum)
+        </th>
+        <th>
+            @Html.LabelFor(model => model[0].Kommentar)
+        </th>
+    </tr>
+
+    @foreach(var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Datum)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Kommentar)
+            </td>
+        </tr>
+    }
+</table>

@@ -55,19 +55,17 @@
     //    });
     //}
 </script>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
-        <th>
-            @*@Html.DisplayNameFor(model => model.heading.)*@
+        @*<th>
+          
             Här ska det vara antal
-            @*@Html.DisplayNameFor(model => model.)*@
-        </th>
+           
+        </th>*@
         <th>
             @*@Html.DisplayNameFor(model => model.heading.pris)*@
-            här ska det vara pris
+            Pris
         </th>
         <th>
             @Html.DisplayNameFor(model => model.heading.Namn)
@@ -100,8 +98,8 @@
                     @Html.HiddenFor(modelItem=>@item.Id)
                 </td>*@
             <td>
-                @Html.HiddenFor(modelItem => Model.Products[item].Id, new { id = item, @class = "updatefunc" })
-                <input type="number" @*value="@Model.Products[item].antal"*@ class="itemantal" />
+                @*@Html.HiddenFor(modelItem => Model.Products[item].Id, new { id = item, @class = "updatefunc" })
+                <input type="number" value="@Model.Products[item].antal" class="itemantal" />*@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => Model.Products[item].Pris)
@@ -133,16 +131,34 @@
             </td>
         </tr>
        }
+   
     <tr>
+        <th>
+            Kommentar med ordern
+        </th>
+        <td>
+           @Html.TextBoxFor(model => model.OrderComment, new {@id="Comment" })
+            
+            
+        </td>
+        <td>
+            <input type="button" value="Kommentera Kundvagn" onclick="PutInComment()"/>
+        </td>
+    </tr>
+    <tr>
+
         <th>
             Totalt kostnad
         </th>
         <td>
             @Html.DisplayFor(model => model.Totalt)
         </td>
+       
         <td> <input type="button" value="I wanna pay!" onclick="Pay()"/></td>
-        <td> <input type="button" value="Update my cart!" onclick="UpdateList()" /></td>
+        
+        @*<td> <input type="button" value="Update my cart!" onclick="UpdateList()" /></td>*@
     </tr>
+    
    
 
 

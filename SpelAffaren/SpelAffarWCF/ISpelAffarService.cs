@@ -30,5 +30,8 @@ namespace SpelAffarWCF
 
         [OperationContract]
         List<GenreDto> GetAllGenre();
+
+        [OperationContract]
+        List<OrderDto> OrderHistorik(PersonDto person);
     }
 }
