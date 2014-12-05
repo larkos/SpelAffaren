@@ -334,6 +334,28 @@ namespace SpelAffarWCF
             return NyGenres;
         }
 
+        public List<OrderDto> OrderHistorik(PersonDto person)
+        {
+
+            List<OrderDto> Orders = new List<OrderDto>();
+            using (var db = new SpelDatabasContainer())
+            {
+                Orders = (from o in db.OrderSet
+                          where person.Id == o.PersonId
+                          select new OrderDto()
+                          {
+                              Id = o.Id,
+                              Datum = o.Datum,
+                              Kommentar = o.Kommentar,
+                              PersonId = o.PersonId,
+                              //SpelPerOrders=o.SpelPerOrder.ToList()
+
+                          }).ToList();
+            }
+
+            return Orders;
+        }
+
         //public void Pay(List<ProduktDto> bp, Personer Buyer)
         //{
 
